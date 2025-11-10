@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.ilcabana.atp.despachocombustible.ActEnviosRealizados">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.ilcabana.atp.despachocombustible.EnviosRealizados">
 
-    <item android:id="@+id/action_search"
-        app:showAsAction="always"
-        android:title="Search"
+    <item
+        android:id="@+id/action_search"
         android:icon="@android:drawable/ic_menu_search"
-        app:actionViewClass="android.widget.SearchView" />
-<!--
+        android:title="Search"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="always" />
+    <!--
     <item
         android:id="@+id/action_envios_descargar"
         android:orderInCategory="100"
@@ -19,19 +20,18 @@
 -->
     <item
         android:id="@+id/action_respaldar_envios"
-        android:orderInCategory="100"
-        app:showAsAction="withText"
         android:icon="@android:drawable/ic_menu_more"
-        android:title="RESPALDAR ENVIOS"/>
+        android:orderInCategory="100"
+        android:title="RESPALDAR ENVIOS"
+        app:showAsAction="withText" />
 
 
     <item
         android:id="@+id/action_bajar_historial"
-        android:orderInCategory="100"
-        app:showAsAction="withText"
         android:icon="@android:drawable/ic_menu_more"
-        android:title="DESCARGAR HISTORIAL"/>
-
+        android:orderInCategory="100"
+        android:title="DESCARGAR HISTORIAL"
+        app:showAsAction="withText" />
 
 
 </menu>

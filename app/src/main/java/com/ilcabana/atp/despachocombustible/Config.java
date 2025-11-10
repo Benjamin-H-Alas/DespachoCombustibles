@@ -19,10 +19,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class Config extends Application {
-	//private static final String key_ipserver 			= "http://10.1.1.200:8080/wsmoviles/ws_reqmovil/";
 	private static final String key_ipserver 			= "http://intranet.grupolacabana.net:8080/wsmoviles/ws_reqmovil/";
 	private static String planilla_roza_ws 				= "planilla_zafra_ws.php";
-	private static String despacho_combustible_ws 		= "despacho_combustible_ws.php";
+	private static String despacho_Envios_ws 		= "despacho_Envios_ws.php";
 
 	public static final String ws_bajarActualizacionApp	= key_ipserver+"appmoviles/appapk/envtonelada.apk";
 
@@ -30,19 +29,16 @@ public class Config extends Application {
 	public static final String ws_cambiarPasswordUsuario    				= "/";
 	public static final String ws_bajarListaEmpleadosRoza 		 			= key_ipserver+planilla_roza_ws+"/bajarListaEmpleadosRoza";
 	public static final String ws_bajarQuincenas				 			= key_ipserver+planilla_roza_ws+"/bajarQuincenas";
-	public static final String ws_bajarListadoEnviosPagoToneladaRealizados 	= key_ipserver+planilla_roza_ws+"/bajarListadoEnviosPagoToneladaRealizados";
 	public static final String ws_eliminarDetallePlanillaUnadas		 		= key_ipserver+planilla_roza_ws+"/eliminarDetallePlanillaUnadas";
-
-	public static final String ws_bajarConfiguracionDispositivo	 			= key_ipserver+despacho_combustible_ws+"/bajarConfiguracionDispositivo";
-	public static final String ws_guardarNuevoMovimientoCombustible 		= key_ipserver+despacho_combustible_ws+"/guardarNuevoMovimientoCombustible";
-	public static final String ws_bajarListadoEnviosPagoTonelada 			= key_ipserver+despacho_combustible_ws+"/bajarListadoEnviosPagoTonelada";
-	public static final	String ws_bajarMovCombustible						= key_ipserver+despacho_combustible_ws+"/bajarMovCombustible";
+	public static final String ws_bajarConfiguracionDispositivo	 			= key_ipserver+despacho_Envios_ws+"/bajarConfiguracionDispositivo";
+	public static final String ws_guardarNuevoMovimientoEnvio 	        	= key_ipserver+despacho_Envios_ws+"/guardarNuevoMovimientoEnvio";
+	public static final String ws_bajarListadoEnvios 			= key_ipserver+despacho_Envios_ws+"/bajarListadoEnvios";
+	public static final	String ws_bajarMovEnvios						= key_ipserver+despacho_Envios_ws+"/bajarMovEnvios";
 
 	//END WEB SERVICES
-	
 	public static final String key_versionApp 		= "2";
 	//public static final String key_nombreApp 		= "PLANILLAROZA";
-	public static final String key_nombreApp 		= "DESPACHO_COMBUSTIBLE";
+	public static final String key_nombreApp 		= "DESPACHO_ENVIOS";
 	public static String key_nombreUser 			= "";//NOMBRE COMPLETO DEL SISTEMA
 	public static String key_codigoUser 			= "";//NOMBRE DE USUARIO JREYES EJEMPLO
 
@@ -60,8 +56,6 @@ public class Config extends Application {
 
 		public static String key_EmprId 				= "";
 
-		//public static String codActivo = "";
-	
 		SQLiteDatabase db;
 		DatabaseHandler_ dbhelper;
 		//BEGIN VARIABLES STATICAS DE LA CLASE BITACORA
@@ -207,7 +201,7 @@ public class Config extends Application {
 		db.execSQL("DELETE FROM " + dbhelper.TABLE_CUADRILLAS);
 		db.execSQL("DELETE FROM " + dbhelper.TABLE_ASISTENCIA_EMP);
 		db.execSQL("DELETE FROM " + dbhelper.TABLE_RASTRAS_CARGADAS);
-		db.execSQL("DELETE FROM " + dbhelper.TABLE_DESPACHO_COMBUSTIBLE);
+		db.execSQL("DELETE FROM " + dbhelper.TABLE_DESPACHO_ENVIOS);
 
 		db.close();
 		return  true;

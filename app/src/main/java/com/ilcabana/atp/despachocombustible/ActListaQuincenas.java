@@ -170,7 +170,7 @@ public class ActListaQuincenas extends AppCompatActivity {
 						return false;
 					}
 				case 2:
-					if (classDescargarInicioApp.ws_guardarNuevoMovimientoCombustible("0")) {
+					if (classDescargarInicioApp.ws_guardarNuevoMovimientoEnvio("0")) {
 
 						return true;
 
@@ -431,8 +431,8 @@ public class ActListaQuincenas extends AppCompatActivity {
 				dbhelper.K_RAS5_COMENTARIO			+"  " +
 
 				") SELECT " +
-				"a."+dbhelper.K_ENV3_PLACA 			+", " +
-				"a."+dbhelper.K_ENV4_TIPOTRACAR 	+", " +
+				"a."+dbhelper.K_ENV1_PLACA 			+", " +
+				"a."+dbhelper.K_ENV6_TIPOTRACAR 	+", " +
 				"a."+dbhelper.K_ENV0_ID 			+", " +
 				" date('now') , " +
 				" '' " +

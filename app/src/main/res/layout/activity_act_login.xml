@@ -17,9 +17,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
-        android:text="Despacho combustible"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        />
+        android:text="Envio de Caña"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/textView2"

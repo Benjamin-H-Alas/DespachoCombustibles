@@ -24,10 +24,9 @@ public class ClassDescargarInicioApp{
 	String ws_cambiarPasswordUsuario					= 	Config.ws_cambiarPasswordUsuario;
 	String ws_bajarQuincenas							= 	Config.ws_bajarQuincenas;
 	String ws_eliminarDetallePlanillaUnadas				= 	Config.ws_eliminarDetallePlanillaUnadas;
-	String ws_bajarListadoEnviosPagoTonelada 			= 	Config.ws_bajarListadoEnviosPagoTonelada;
-	String ws_bajarListadoEnviosPagoToneladaRealizados 	=   Config.ws_bajarListadoEnviosPagoToneladaRealizados;
-	String ws_guardarNuevoMovimientoCombustible			= 	Config.ws_guardarNuevoMovimientoCombustible;
-	String ws_bajarMovCombustible						= 	Config.ws_bajarMovCombustible;
+	String ws_guardarNuevoMovimientoEnvio       		= 	Config.ws_guardarNuevoMovimientoEnvio;
+	String ws_bajarMovEnvios						= 	Config.ws_bajarMovEnvios;
+	String ws_bajarListadoEnvios 			= 	Config.ws_bajarListadoEnvios;
 
 	static Httppostaux post;
 	SQLiteDatabase db;
@@ -78,8 +77,6 @@ public class ClassDescargarInicioApp{
 							+"'"+e.getString("nivelAcceso")  	 +"'   " //
 							+")");
 
-					//Config.key_EmprId = e.getString("EmprId");
-					//Config.key_UsuId_ = e.getString("USERID");
 					db.close();
 				}
 				return true;
@@ -133,17 +130,17 @@ public class ClassDescargarInicioApp{
 		return true;
 	}
 
-	public boolean ws_bajarListadoEnviosPagoToneladaRealizados(String EmprId, String UsuId, String QuinId)
+	public boolean ws_bajarListadoEnvios(String EmprId, String UsuId, String QuinId)
 	{
 		try{
-			Log.d("MovimientosQuincena", "ws_bajarListadoEnviosPagoToneladaRealizados");
+			Log.d("MovimientosQuincena", "ws_bajarListadoEnvios");
 
 			ArrayList<NameValuePair> postparameters2send= new ArrayList<NameValuePair>();
 			postparameters2send.add(new BasicNameValuePair("EmprId", EmprId));
 			postparameters2send.add(new BasicNameValuePair("UsuId", UsuId));
 			postparameters2send.add(new BasicNameValuePair("CuaId", QuinId));
 
-			JSONArray datosjs = post.getserverdata(postparameters2send,ws_bajarListadoEnviosPagoToneladaRealizados);
+			JSONArray datosjs = post.getserverdata(postparameters2send,ws_bajarListadoEnvios);
 			Log.d(" Informe JSONArray", "Valor que contiene JSONArray los datos: " + datosjs);
 			Log.d(" Informe JSONArray", "Valor que contiene POST: " + postparameters2send);
 			if (datosjs != null && datosjs.length() > 0) {
@@ -151,7 +148,7 @@ public class ClassDescargarInicioApp{
 				db = dbhelper.getReadableDatabase();
 				String queryDelete = "";
 					queryDelete = "DELETE FROM "+dbhelper.TABLE_ENVIOS_REALIZADOS+
-						" WHERE "+dbhelper.K_ENVR3_ESTATUSLOCAL +" = '0' "
+						" WHERE "+dbhelper.K_ENVR15_ESTATUSLOCAL +" = '0' "
 					;
 				db.execSQL(queryDelete);
 
@@ -162,13 +159,13 @@ public class ClassDescargarInicioApp{
 
 					db = dbhelper.getReadableDatabase();
 					String query = "INSERT INTO " + dbhelper.TABLE_ENVIOS_REALIZADOS + " ( " +
-							dbhelper.K_ENVR1_ENVCOD			+",  " +
-							dbhelper.K_ENVR2_ENVDESC		+",  " +
-							dbhelper.K_ENVR3_ESTATUSLOCAL	+",  " +
-							dbhelper.K_ENVR4_INGRESO_MANUAL	+"   " +
+							dbhelper.K_ENVR1_ENVIO			+",  " +
+							//dbhelper.K_ENVR2_ENVDESC		+",  " +
+							dbhelper.K_ENVR15_ESTATUSLOCAL	+",  " +
+							dbhelper.K_ENVR16_INGRESO_MANUAL	+"   " +
 							") VALUES ( " +
 							" '"+e.getString("TACO") 		+"', " +
-							" '"+e.getString("TACODESC") 	+"', " +
+							//" '"+e.getString("TACODESC") 	+"', " +
 							" '0', " +
 							" '0'  " +
 							" ) ";
@@ -191,7 +188,7 @@ public class ClassDescargarInicioApp{
 		}
 	}
 
-	
+
 	public String ws_eliminarDetallePlanillaUnadas( String USER, String LLAVE_DETALLE )
 	{
 		String mensaje = "";
@@ -224,8 +221,8 @@ public class ClassDescargarInicioApp{
 		}
 		return mensaje;
 	}
-
-	public boolean ws_bajarListadoEnviosPagoTonelada (String Taco,String Placa)
+// este sirve para el row del taco
+	public boolean ws_bajarListadoEnvios (String Taco,String Placa)
 	{
 		try{
 			Log.d("descargarInsertActivos", "descargarInsertActivos");
@@ -233,7 +230,7 @@ public class ClassDescargarInicioApp{
 			postparameters2send.add(new BasicNameValuePair("Taco",Taco));
 			postparameters2send.add(new BasicNameValuePair("Placa", Placa));
 
-			JSONArray datosjs = post.getserverdata(postparameters2send,ws_bajarListadoEnviosPagoTonelada);
+			JSONArray datosjs = post.getserverdata(postparameters2send,ws_bajarListadoEnvios);
 			Log.e(" Informe JSONArray", "Valor que contiene JSONArray los datos: " + datosjs);
 			db = dbhelper.getReadableDatabase();
 			String queryDelete = "";
@@ -249,16 +246,17 @@ public class ClassDescargarInicioApp{
 					db = dbhelper.getReadableDatabase();
 					db.execSQL("INSERT INTO "+dbhelper.TABLE_ENVIOS+" VALUES ("
 							+""+e.getString("TACO")				+",   " //0 CORRELATIVO QUE VIENE DEL WEB SERVICE
-							+"'DESC UNIDAD EJEMPLO' , " //1
-							+"'"+e.getString("LOTEDESC")       	+"' , " //6
-							+"'"+e.getString("PLACA")     		+"' , "	//6
-							+"'"+e.getString("TIPOTRACAR")  	+"' , "	//6
-							+"'"+e.getString("CODLOTE")  		+"' , "	//6
-							+"'"+e.getString("CODTRA")  		+"' , "	//6
-							+"'"+e.getString("CODMOTOR")  		+"' , "	//6
-							+"'"+e.getString("nomMotor")  		+"' , "	//6
-							+"'"+e.getString("licencia")  		+"' , "	//6
-							+"'"+e.getString("cantComb")  		+"'   "	//6
+							+"'"+e.getString("PLACA")     		+"' , "	//1
+							+"'"+e.getString("CODMOTOR")  		+"' , "	//2
+							+"'"+e.getString("CODCLIE")  		+"' , "	//3
+							+"'"+e.getString("ORDENQUEMA")  		+"' , "	//4
+							+"'"+e.getString("PROCEDENCIA")  	+"' , "	//5
+							+"'"+e.getString("TIPOTRACAR")   	+"' , "	//6
+							+"'"+e.getString("CODLOTE")  		+"' , "	//7
+							+"'"+e.getString("NOMLOTE")  		+"' , "	//8
+							+"'"+e.getString("CODTRA")  		    +"' , "	//9
+							+"'"+e.getString("NOMMOTOR")  		+"' , "	//10
+							+"'"+e.getString("FSALING")  		+"'  "	//11
 							+")");
 
 					db.close();
@@ -275,7 +273,7 @@ public class ClassDescargarInicioApp{
 	}
 
 
-	public boolean bajarListadoEnviosPagoTonelada (String EmprId,String UsuId)
+	public boolean ws_bajarMovEnvios(String EmprId, String UsuId)
 	{
 		try{
 
@@ -283,7 +281,7 @@ public class ClassDescargarInicioApp{
 	    	ArrayList<NameValuePair> postparameters2send= new ArrayList<NameValuePair>();
 		    postparameters2send.add(new BasicNameValuePair("EmprId", EmprId));
 			postparameters2send.add(new BasicNameValuePair("UsuId", UsuId));
-		    JSONArray datosjs = post.getserverdata(postparameters2send,ws_bajarListadoEnviosPagoTonelada);
+		    JSONArray datosjs = post.getserverdata(postparameters2send,ws_bajarMovEnvios);
 		    Log.d(" Informe JSONArray", "Valor que contiene JSONArray los datos: " + datosjs);
 		if (datosjs != null && datosjs.length() > 0) {
 
@@ -300,10 +298,17 @@ public class ClassDescargarInicioApp{
 		        db = dbhelper.getReadableDatabase();
 		        db.execSQL("INSERT INTO "+dbhelper.TABLE_ENVIOS+" VALUES ("
 		        		+""+e.getString("TACO")				+",   " //0 CORRELATIVO QUE VIENE DEL WEB SERVICE
-						+"'DESC UNIDAD EJEMPLO' , " //1
-	        			+"'"+e.getString("LOTEDESC")       	+"' , " //1
-	        			+"'"+e.getString("PLACA")     		+"' , "	//5
-	        			+"'"+e.getString("TIPOTRACAR")  	+"'   "	//6
+	        			+"'"+e.getString("PLACA")     		+"' , "	//1
+	        			+"'"+e.getString("CODMOTOR")  	+"'   "	//2
+						+""+e.getString("CODCLIE")				+",   " //3
+						+"'"+e.getString("ORDENQUEMA")     		+"' , "	//4
+						+"'"+e.getString("PROCEDENCIA")  	+"'   "	//5
+						+""+e.getString("TIPOTRACAR")				+",   " //6
+						+"'"+e.getString("CODLOTE")     		+"' , "	//7
+						+"'"+e.getString("NOMLOTE")  	+"'   "	//8
+						+""+e.getString("CODTRA")				+",   " //9
+						+"'"+e.getString("NOMMOTOR")     		+"' , "	//10
+						+"'"+e.getString("FSALING")  	+"'   "	//11
 	        			+")");  
 		        db.close();
 			}
@@ -318,7 +323,7 @@ public class ClassDescargarInicioApp{
 		return true;		
 	}
 
-	public boolean ws_guardarNuevoMovimientoCombustible(String MovCombustibleId){
+	public boolean ws_guardarNuevoMovimientoEnvio(String MovEnvio){
 		try{
 			ArrayList<NameValuePair> postparameters2send= new ArrayList<NameValuePair>();
 
@@ -327,24 +332,27 @@ public class ClassDescargarInicioApp{
 			int resp_id = 0;
 
 			String query = " SELECT "
-					+ dbhelper.K_COMB0_ID          		+ " , "
-					+ dbhelper.K_COMB1_NUMTACO          + " , "
-					+ dbhelper.K_COMB2_PLACA            + " , "
-					+ dbhelper.K_COMB3_NUMTRASP         + " , "
-					+ dbhelper.K_COMB4_USUARIO          + " , "
-					+ dbhelper.K_COMB5_FECHA            + " , "
-					+ dbhelper.K_COMB6_NOS              + " , "
-					+ dbhelper.K_COMB7_GAL_BOMBA        + " , "
-					+ dbhelper.K_COMB8_GAL_PRECIO       + " , "
-					+ dbhelper.K_COMB9_CORTE            + " , "
-					+ dbhelper.K_COMB10_CORRELATIVO     + " , "
-					+ dbhelper.K_COMB11_LLAVE           + "   "
-
-					+" FROM  " +dbhelper.TABLE_DESPACHO_COMBUSTIBLE	+" a "
-					+" WHERE 	a."+dbhelper.K_COMB11_LLAVE+" = '0' "
-					+" AND CASE WHEN '"+MovCombustibleId+"' = '0' THEN a."+dbhelper.K_COMB0_ID+" = a."+dbhelper.K_COMB0_ID+" ELSE a."+dbhelper.K_COMB0_ID+" = '"+MovCombustibleId+"' END "
-					+" ORDER BY a."+dbhelper.K_COMB0_ID+" DESC  LIMIT 1 "
-					//+" AND 		a."+dbhelper.K_COMB0_ID+" = '"+MovCombustibleId+"' "
+					+ dbhelper.K_DESP0_ID          		+ " , "
+					+ dbhelper.K_DESP1_ENVIO            + " , "
+					+ dbhelper.K_DESP2_CARGADORA        + " , "
+					+ dbhelper.K_DESP3_CARGADOR         + " , "
+					+ dbhelper.K_DESP4_NOMBRECARD      + " , "
+					+ dbhelper.K_DESP5_FCORTA           + " , "
+					+ dbhelper.K_DESP6_HCORTA           + " , "
+					+ dbhelper.K_DESP7_FLLEGA           + " , "
+					+ dbhelper.K_DESP8_HLLEGA           + " , "
+					+ dbhelper.K_DESP9_FCARGA           + " , "
+					+ dbhelper.K_DESP10_HCARGA           + " , "
+					+ dbhelper.K_DESP11_FSALIDA         + " , "
+					+ dbhelper.K_DESP12_HSALIDA         + " , "
+					+ dbhelper.K_DESP13_OBSERV          + " , "
+					+ dbhelper.K_DESP14_ULTIMOENV       + " ,  "
+					+ dbhelper.K_DESP16_OC               + " ,  "
+					+ dbhelper.K_DESP17_NOENVIO               + " ,  "
+					+ dbhelper.K_DESP18_TIPCANA               + "   "
+					+" FROM  " +dbhelper.TABLE_DESPACHO_ENVIOS	+" a "
+					+" WHERE 	a."+dbhelper.K_DESP1_ENVIO +" <> '"+MovEnvio+"' "
+					+" ORDER BY a."+dbhelper.K_DESP0_ID+" DESC  LIMIT 1 "
 					;
 			Log.e("INFORME QUERY", "MI QUERY: " + query);
 			Cursor c = db.rawQuery(query, null);
@@ -352,19 +360,25 @@ public class ClassDescargarInicioApp{
 				do{
 
 					resp_id = Integer.parseInt(c.getString(0));
-					postparameters2send.add(new BasicNameValuePair("numTaco"  		,c.getString(1)));
-					postparameters2send.add(new BasicNameValuePair("placa" 			,c.getString(2)));
-					postparameters2send.add(new BasicNameValuePair("codTransp" 		,c.getString(3)));
-					postparameters2send.add(new BasicNameValuePair("usuIngresa" 	,c.getString(4)));
-					postparameters2send.add(new BasicNameValuePair("fechaMov" 		,c.getString(5)));
-					postparameters2send.add(new BasicNameValuePair("NOS" 			,c.getString(6)));
-					postparameters2send.add(new BasicNameValuePair("galonesBomba" 	,c.getString(7)));
-					postparameters2send.add(new BasicNameValuePair("precio" 		,c.getString(8)));
-					postparameters2send.add(new BasicNameValuePair("corte" 			,c.getString(9)));
-					postparameters2send.add(new BasicNameValuePair("docCorrelativo" ,c.getString(10)));
+					postparameters2send.add(new BasicNameValuePair("NUMTACO"  		,c.getString(1)));
+					postparameters2send.add(new BasicNameValuePair("CARGADORA" 			,c.getString(2)));
+					postparameters2send.add(new BasicNameValuePair("CARGADOR" 		,c.getString(3)));
+					postparameters2send.add(new BasicNameValuePair("NOMBRECARD"  ,c.getString(4)));
+					postparameters2send.add(new BasicNameValuePair("FCORTA" 	,c.getString(5)));
+					postparameters2send.add(new BasicNameValuePair("HCORTA" 	,c.getString(6)));
+					postparameters2send.add(new BasicNameValuePair("FLLEGA" 			,c.getString(7)));
+					postparameters2send.add(new BasicNameValuePair("HLLEGA" 			,c.getString(8)));
+					postparameters2send.add(new BasicNameValuePair("FCARGA" 		,c.getString(9)));
+					postparameters2send.add(new BasicNameValuePair("HCARGA" 		,c.getString(10)));
+					postparameters2send.add(new BasicNameValuePair("FSALIDA" ,c.getString(11)));
+					postparameters2send.add(new BasicNameValuePair("HSALIDA" ,c.getString(12)));
+					postparameters2send.add(new BasicNameValuePair("OBSERV"  ,c.getString(13)));
+					postparameters2send.add(new BasicNameValuePair("ULTIMOENV"  ,c.getString(14)));
+					postparameters2send.add(new BasicNameValuePair("OC"  ,c.getString(15)));
+					postparameters2send.add(new BasicNameValuePair("NOENVIO"  ,c.getString(16)));
+					postparameters2send.add(new BasicNameValuePair("TIPCANA"  ,c.getString(17)));
 
-
-					JSONArray datosjs = post.getserverdata(postparameters2send, ws_guardarNuevoMovimientoCombustible);
+					JSONArray datosjs = post.getserverdata(postparameters2send, ws_guardarNuevoMovimientoEnvio);
 					Log.e(" Informe JSONArray", "Valor que contiene JSONArray los datos: " + datosjs);
 					Log.e(" Informe JSONArray", "Valor que contiene JSONArray los datos: " + postparameters2send);
 
@@ -379,15 +393,15 @@ public class ClassDescargarInicioApp{
 
 						JSONObject json_data; //creamos un objeto JSON
 						json_data = datosjs.getJSONObject(0); //leemos el primer segmento en nuestro caso el unico
-						LLAVE = json_data.getInt("idMovComb");//accedemos al valor
+						LLAVE = json_data.getInt("NUMTACO");//accedemos al valor
 
 						Log.e("Informe", "Resultado web service resultado:" + LLAVE);//muestro por log que obtuvimos
 
 						setUpdateCampo(
-								dbhelper.TABLE_DESPACHO_COMBUSTIBLE,
-								dbhelper.K_COMB11_LLAVE,
+								dbhelper.TABLE_DESPACHO_ENVIOS,
+								dbhelper.K_DESP15_LLAVE,
 								"'"+LLAVE+"'",
-								dbhelper.K_COMB0_ID,
+								dbhelper.K_DESP0_ID ,
 								Integer.toString(resp_id)
 						);
 					}
@@ -404,7 +418,7 @@ public class ClassDescargarInicioApp{
 		return true;
 	}
 
-	public boolean ws_bajarMovCombustible(String EmprId)
+	public boolean ws_bajarMovEnvios(String EmprId)
 	{
 		try{
 			Log.d("ConfigDispositivo", "descargarConfiguracionDispositivo");
@@ -412,43 +426,46 @@ public class ClassDescargarInicioApp{
 			ArrayList<NameValuePair> postparameters2send= new ArrayList<NameValuePair>();
 			postparameters2send.add(new BasicNameValuePair("EmprId", EmprId));
 
-			JSONArray datosjs = post.getserverdata(postparameters2send,ws_bajarMovCombustible);
+			JSONArray datosjs = post.getserverdata(postparameters2send,ws_bajarMovEnvios);
 			Log.d(" Informe JSONArray", "Valor que contiene JSONArray los datos: " + datosjs);
 			Log.d(" Informe JSONArray", "Valor que contiene POST: " + postparameters2send);
 			if (datosjs != null && datosjs.length() > 0) {
 
 				db = dbhelper.getReadableDatabase();
-				db.execSQL("DELETE FROM "+dbhelper.TABLE_DESPACHO_COMBUSTIBLE);
+				db.execSQL("DELETE FROM "+dbhelper.TABLE_ENVIOS);
 				db.close();
 				for(int i=0;i<datosjs.length();i++){
 					JSONObject e = datosjs.getJSONObject(i);
 
 					db = dbhelper.getReadableDatabase();
-					String queryInsert = "INSERT INTO " + dbhelper.TABLE_DESPACHO_COMBUSTIBLE + " ( "
-							+ dbhelper.K_COMB1_NUMTACO          + " , "
-							+ dbhelper.K_COMB2_PLACA            + " , "
-							+ dbhelper.K_COMB3_NUMTRASP         + " , "
-							+ dbhelper.K_COMB4_USUARIO          + " , "
-							+ dbhelper.K_COMB5_FECHA            + " , "
-							+ dbhelper.K_COMB6_NOS              + " , "
-							+ dbhelper.K_COMB7_GAL_BOMBA        + " , "
-							+ dbhelper.K_COMB8_GAL_PRECIO       + " , "
-							+ dbhelper.K_COMB9_CORTE            + " , "
-							+ dbhelper.K_COMB10_CORRELATIVO     + " , "
-							+ dbhelper.K_COMB11_LLAVE           + "   "
+					String queryInsert = "INSERT INTO " + dbhelper.TABLE_ENVIOS + " ( "
+							+ dbhelper.K_ENV0_ID            + " , "
+							+ dbhelper.K_ENV1_PLACA        + " , "
+							+ dbhelper.K_ENV2_CODMOTOR         + " , "
+							+ dbhelper.K_ENV3_CODCLIE      + "   "
+							+ dbhelper.K_ENV4_ORDENQUEMA           + " , "
+							+ dbhelper.K_ENV5_PROCEDENCIA           + " , "
+							+ dbhelper.K_ENV6_TIPOTRACAR            + " , "
+							+ dbhelper.K_ENV7_CODLOTE           + " , "
+							+ dbhelper.K_ENV8_NOMLOTE           + " , "
+							+ dbhelper.K_ENV9_CODTRA           + " , "
+							+ dbhelper.K_ENV10_NOMMOTOR         + " , "
+							+ dbhelper.K_ENV11_FSALING         + "  "
+
 
 							+ " ) VALUES ( "
-							+ " '" + e.getString("compcomb")   	 + "' , "
-							+ " '" + e.getString("placa")   	 + "' , "
-							+ " '" + e.getString("trans")   	 + "' , "
-							+ " '" + e.getString("usucom")   	 + "' , "
-							+ " '" + e.getString("fechacom")   	 + "' , "
-							+ " '" + e.getString("NOS")   		 + "' , "
-							+ " '" + e.getString("galonesbomba") + "' , "
-							+ " '" + e.getString("precio")   	 + "' , "
-							+ " '" + e.getString("corte")   	 + "' , "
-							+ " '" + e.getString("numTurno")   	 + "' , "
-							+ " '" + e.getString("idMovComb")    + "'   "
+							+ " '" + e.getString("TACO")   	+ "' , "
+							+ " '" + e.getString("PLACA")   	+ "' , "
+							+ " '" + e.getString("CARGADOR")   	+ "' , "
+							+ " '" + e.getString("CODMOTOR")   + "' ,  "
+							+ " '" + e.getString("CODCLIE")   	+ "' , "
+							+ " '" + e.getString("ORDENQUEMA")   	+ "' , "
+							+ " '" + e.getString("PROCEDENCIA")   	+ "' , "
+							+ " '" + e.getString("TIPOTRACAR")   	+ "' , "
+							+ " '" + e.getString("NOMLOTE")       + "' , "
+							+ " '" + e.getString("CODTRA")       + "' , "
+							+ " '" + e.getString("NOMMOTOR")      + "' , "
+							+ " '" + e.getString("FSALING")      + "'  "
 							+" ) "
 							;
 

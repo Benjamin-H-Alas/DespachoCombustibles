@@ -35,7 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class ActDespachoCombustible extends AppCompatActivity implements SearchView.OnQueryTextListener{
+public class EnviosRealizados extends AppCompatActivity implements SearchView.OnQueryTextListener{
     Httppostaux post;
     private ProgressDialog pDialog;
     ListView lv_despachos_realizados;
@@ -89,9 +89,9 @@ public class ActDespachoCombustible extends AppCompatActivity implements SearchV
                                     int posicion, long arg3) {
                 HashMap<?, ?> itemList = (HashMap<?, ?>) lv_despachos_realizados.getItemAtPosition(posicion);
 
-                if(itemList.get("K_COMB11_LLAVE").toString().equals("0")){
+                if(itemList.get("K_DESP15_LLAVE").toString().equals("0")){
 
-                    modalRespaldarDespacho(itemList.get("K_COMB0_ID").toString());
+                    modalRespaldarDespacho(itemList.get("K_DESP0_ID").toString());
                 }
                 else{
 
@@ -192,7 +192,7 @@ public class ActDespachoCombustible extends AppCompatActivity implements SearchV
     public  void metodoRespaldarDespachoPendiete(String idRegistro){
 
         pDialog = new ProgressDialog(this);
-        pDialog.setMessage("Descarga de envios....");
+        pDialog.setMessage("Respaldando de envios....");
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(false);
         new MiTareaAsincronaDialog(this,idRegistro, 2).execute();
@@ -202,7 +202,7 @@ public class ActDespachoCombustible extends AppCompatActivity implements SearchV
     public  void respaldarEnviosTonelada(){
 
         pDialog = new ProgressDialog(this);
-        pDialog.setMessage("Descarga de envios....");
+        pDialog.setMessage("Respaldo de envios....");
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(false);
         new MiTareaAsincronaDialog(this,"0", 2).execute();
@@ -236,18 +236,11 @@ public class ActDespachoCombustible extends AppCompatActivity implements SearchV
                 //metodoIniciarDescargaEnvios();
                 if (verificaConexion(ctx)) {
                     metodoRespaldarDespachoPendiete(idRegistro);
+
                 } else {
                     Toast.makeText(ctx, "No hay conexión a Internet", Toast.LENGTH_SHORT).show();
                 }
-                /*
-                if ((Double.parseDouble(validarCampoVacio( txtCantidad.getText().toString() )) > 0)) {
-                    TacoNumero = txtCantidad.getText().toString();
-                    metodoIniciarDescargaEnvios();
-                } else {
-                    Toast.makeText(ctx, "Digite un valor correcto", Toast.LENGTH_SHORT).show();
-                    addTaco();
-                }
-                */
+
             }
         });
         builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -331,7 +324,7 @@ public class ActDespachoCombustible extends AppCompatActivity implements SearchV
             switch (numActividad) {
 
                 case 1:
-                    if (classDescargarInicioApp.ws_bajarListadoEnviosPagoToneladaRealizados(Config.key_EmprId, Config.getKey_UsuId_(), "0")
+                    if (classDescargarInicioApp.ws_bajarListadoEnvios(Config.key_EmprId, Config.getKey_UsuId_(), "0")
                             ){
                         return true;
                     }else{
@@ -345,7 +338,7 @@ public class ActDespachoCombustible extends AppCompatActivity implements SearchV
                         return false;
                     }
                 case 2:
-                    if (classDescargarInicioApp.ws_guardarNuevoMovimientoCombustible(idRegistro)
+                    if (classDescargarInicioApp.ws_guardarNuevoMovimientoEnvio(idRegistro)
                             ){
                         return true;
                     }else{
@@ -359,7 +352,7 @@ public class ActDespachoCombustible extends AppCompatActivity implements SearchV
                         return false;
                     }
                 case 3:
-                    if (classDescargarInicioApp.ws_bajarMovCombustible("0")
+                    if (classDescargarInicioApp.ws_bajarMovEnvios("0")
                             ){
                         return true;
                     }else{

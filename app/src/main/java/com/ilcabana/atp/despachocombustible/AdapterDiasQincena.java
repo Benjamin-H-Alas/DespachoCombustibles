@@ -47,20 +47,20 @@ public class AdapterDiasQincena {
 				String queryIntroSubConsultaTotalPagar = "";
 				String queryIntroSubConsultaPendientes = "";
 
-				queryIntroSubConsultaPendientes = " SELECT COUNT(*) FROM "
-						+dbhelper.TABLE_ENVIOS_REALIZADOS+" AS n "
-						+" WHERE n."+dbhelper.K_ENVR15_QUINID    +" = m."+dbhelper.K_ENVR15_QUINID+" "
-						+" AND   n."+dbhelper.K_ENVR14_LLAVE    +" = 0 "
-						+" AND   n."+dbhelper.K_ENVR12_FECHADIA    +" = m."+dbhelper.K_ENVR12_FECHADIA+" "
-				;
+				//queryIntroSubConsultaPendientes = " SELECT COUNT(*) FROM "
+				//		+dbhelper.TABLE_ENVIOS_REALIZADOS+" AS n "
+				//		+" WHERE n."+dbhelper.K_ENVR15_QUINID    +" = m."+dbhelper.K_ENVR15_QUINID+" "
+				//		+" AND   n."+dbhelper.K_ENVR14_LLAVE    +" = 0 "
+				//		+" AND   n."+dbhelper.K_ENVR12_FECHADIA    +" = m."+dbhelper.K_ENVR12_FECHADIA+" "
+				//;
 
-				queryIntroSubConsultaTotalPagar = " SELECT ifnull(COUNT(m."+dbhelper.K_ENVR0_ID+"), 0) AS TOTALPAGAR, "//m."+dbhelper.K_DET7_CANTIDAD+" * m."+dbhelper.K_DET12_PRECIO+"
-						+" ifnull(( "+queryIntroSubConsultaPendientes+" ), 0) AS TOTALPENDIENTES "
-						+" FROM "
-						+dbhelper.TABLE_ENVIOS_REALIZADOS+" AS m"
-						+" WHERE m."+dbhelper.K_ENVR15_QUINID    +" = "+IDQUINCENA+" "
-						+ " AND CASE WHEN '"+sdflocal.format(date)+"' = '' THEN m."+dbhelper.K_ENVR12_FECHADIA+" = m."+dbhelper.K_ENVR12_FECHADIA+" ELSE m."+dbhelper.K_ENVR12_FECHADIA+" LIKE '%"+sdflocal.format(date)+"%' END "
-				;
+				//queryIntroSubConsultaTotalPagar = " SELECT ifnull(COUNT(m."+dbhelper.K_ENVR0_ID+"), 0) AS TOTALPAGAR, "//m."+dbhelper.K_DET7_CANTIDAD+" * m."+dbhelper.K_DET12_PRECIO+"
+				//		+" ifnull(( "+queryIntroSubConsultaPendientes+" ), 0) AS TOTALPENDIENTES "
+				//		+" FROM "
+				//		+dbhelper.TABLE_ENVIOS_REALIZADOS+" AS m"
+				//		+" WHERE m."+dbhelper.K_ENVR15_QUINID    +" = "+IDQUINCENA+" "
+				//		+ " AND CASE WHEN '"+sdflocal.format(date)+"' = '' THEN m."+dbhelper.K_ENVR12_FECHADIA+" = m."+dbhelper.K_ENVR12_FECHADIA+" ELSE m."+dbhelper.K_ENVR12_FECHADIA+" LIKE '%"+sdflocal.format(date)+"%' END "
+				//;
 				String[] strDays = new String[]{
 						"Domingo",
 						"Lunes",

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by Juan Jose on 23/12/2015.
+// es para el row donde muestra la info del taco
  */
 public class AdapterEnvios {
     public SimpleAdapter adapterEnvios (Context ctx, String FILTRO, String IDTACO){
@@ -24,61 +24,62 @@ public class AdapterEnvios {
 
         String query = "SELECT "
                 + "DISTINCT(a."+dbhelper.K_ENV0_ID+"),  "
-                + " a."+dbhelper.K_ENV1_UMOVDESC	+", "
-                + " a."+dbhelper.K_ENV2_LOTEDESC	+", "
-                + " a."+dbhelper.K_ENV3_PLACA	    +", "
-                + " a."+dbhelper.K_ENV4_TIPOTRACAR	+", "
-                + " a."+dbhelper.K_ENV5_CODLOTE	    +", "
-                + " a."+dbhelper.K_ENV6_CODTRA	    +", "
-                + " a."+dbhelper.K_ENV7_CODMOTOR	+", "
-                + " a."+dbhelper.K_ENV8_NOMMOTOR	+", "
-                + " a."+dbhelper.K_ENV9_LICENCIAMOTOR +", "
-                + " a."+dbhelper.K_ENV10_CANTCOMB     +"  "
-
+                + " a."+dbhelper.K_ENV1_PLACA	+", "
+               + " a."+dbhelper.K_ENV2_CODMOTOR	+", "
+                + " a."+dbhelper.K_ENV3_CODCLIE	    +", "
+                + " a."+dbhelper.K_ENV4_ORDENQUEMA	+", "
+                + " a."+dbhelper.K_ENV5_PROCEDENCIA  +", "
+                + " a."+dbhelper.K_ENV6_TIPOTRACAR	    +", "
+                + " a."+dbhelper.K_ENV7_CODLOTE     	+", "
+                + " a."+dbhelper.K_ENV8_NOMLOTE    	+", "
+                + " a."+dbhelper.K_ENV9_CODTRA +", "
+                + " a."+dbhelper.K_ENV10_NOMMOTOR     +" , "
+                + " a."+dbhelper.K_ENV11_FSALING     +"  "
                 + " FROM   "+dbhelper.TABLE_ENVIOS+" AS a "
                 + " WHERE "
                 + " CASE WHEN '"+IDTACO+"' = '' THEN a."+dbhelper.K_ENV0_ID+" = a."+dbhelper.K_ENV0_ID+" ELSE a."+dbhelper.K_ENV0_ID+" = '"+IDTACO+"' END "
-
-                +"  AND ( CASE WHEN '"+FILTRO+"' = '0' THEN a."+dbhelper.K_ENV2_LOTEDESC+" = a."+dbhelper.K_ENV2_LOTEDESC+" ELSE a."+dbhelper.K_ENV2_LOTEDESC+" LIKE '%"+FILTRO+"%' END "
-                + " OR    CASE WHEN '"+FILTRO+"' = '0' THEN a."+dbhelper.K_ENV0_ID+" = a."+dbhelper.K_ENV0_ID+" ELSE a."+dbhelper.K_ENV0_ID+" LIKE '%"+FILTRO+"%' END "
-                + " OR    CASE WHEN '"+FILTRO+"' = '0' THEN a."+dbhelper.K_ENV3_PLACA+" = a."+dbhelper.K_ENV3_PLACA+" ELSE a."+dbhelper.K_ENV3_PLACA+" LIKE '%"+FILTRO+"%' END "
-                + " OR    CASE WHEN '"+FILTRO+"' = '0' THEN a."+dbhelper.K_ENV4_TIPOTRACAR+" = a."+dbhelper.K_ENV4_TIPOTRACAR+" ELSE a."+dbhelper.K_ENV4_TIPOTRACAR+" LIKE '%"+FILTRO+"%' END )"
+                //+ " OR    CASE WHEN '"+FILTRO+"' = '0' THEN a."+dbhelper.K_ENV0_ID+" = a."+dbhelper.K_ENV0_ID+" ELSE a."+dbhelper.K_ENV0_ID+" LIKE '%"+FILTRO+"%' END "
+               // + " OR    CASE WHEN '"+FILTRO+"' = '0' THEN a."+dbhelper.K_ENV1_PLACA+" = a."+dbhelper.K_ENV1_PLACA+" ELSE a."+dbhelper.K_ENV1_PLACA+" LIKE '%"+FILTRO+"%' END "
+               // + " OR    CASE WHEN '"+FILTRO+"' = '0' THEN a."+dbhelper.K_ENV6_TIPOTRACAR+" = a."+dbhelper.K_ENV6_TIPOTRACAR+" ELSE a."+dbhelper.K_ENV6_TIPOTRACAR+" LIKE '%"+FILTRO+"%' END )"
                 + " LIMIT 1"
                 ;
 
         Log.i("QUERY", "QUERY: " + query);
 
         ArrayList<HashMap<String, String>> myListActivosOcaciones = new ArrayList<HashMap<String, String>>();
-        String[] fromActivos = new String[] {"tv_galones_asignados", "tvr_num_taco", "tvr_codnom_lote", "tvr_num_placa", "tvr_tipo_rastra", "tvr_codtrasport"};        //, "tv_det_pendientes", "tv_una_pendientes"
-        int[] toActivos = new int[] { R.id.tv_galones_asignados,  R.id.tvr_num_envio, R.id.tvr_codnom_lote , R.id.tvr_num_placa, R.id.tvr_tipo_rastra, R.id.tvr_codtrasport};  //, R.id.tv_det_pendientes, R.id.tv_una_pendientes
+        String[] fromActivos = new String[] {"tvr_num_envio", "tvr_num_placa", "tvr_codmotor", "tvr_codclie", "tvr_ordenquema","tvr_procedencia","tvr_tipotracar","tvr_codlote","tvr_nomlote","tvr_codtra","tvr_nommotor","tvr_fsaling"};
+        int[] toActivos = new int[] { R.id.tvr_num_envio, R.id.tvr_num_placa, R.id.tvr_codmotor, R.id.tvr_nomcargador, R.id.tvr_ordenquema, R.id.tvr_procedencia, R.id.tvr_tipotracar, R.id.tvr_codlote, R.id.tvr_nomlote, R.id.tvr_codtra, R.id.tvr_nommotor,R.id.tvr_fsaling};
 
         Cursor cFrentes = db.rawQuery(query, null);
 
         if(cFrentes.moveToFirst()){
             do{
                 HashMap<String, String> map = new HashMap<String, String>();
-
-                map.put("tv_galones_asignados"      , "Ultimo Precio: "+cFrentes.getString(10));
-
-                map.put("tvr_num_taco"      , "TACO: "+cFrentes.getString(0));
-                map.put("tvr_codnom_lote"	, "Motorista:"+cFrentes.getString(7)+" / "+cFrentes.getString(8)+" / licencia: "+cFrentes.getString(9));//cFrentes.getString(2)
-                map.put("tvr_num_placa"	    , "PLACAS: "+cFrentes.getString(3));
-                map.put("tvr_tipo_rastra"	, cFrentes.getString(4));
-                map.put("tvr_codtrasport"	, cFrentes.getString(6));
-                map.put("tv_det_pendientes"	, "0");//cFrentes.getString(5));
-                map.put("tv_una_pendientes"	, "0");//cFrentes.getString(6));
-
-
-
+                map.put("tvr_num_envio"      , "TACO: "+cFrentes.getString(0));
+                map.put("tvr_num_placa"	, "PLACA:"+cFrentes.getString(1));
+                map.put("tvr_codmotor"	    , "CODMOT: "+cFrentes.getString(2));
+                map.put("tvr_codclie"      , "CLIE: "+cFrentes.getString(3));
+                map.put("tvr_ordenquema"	, "OC:"+cFrentes.getString(4));
+                map.put("tvr_procedencia"	    , "PROC: "+cFrentes.getString(5));
+                map.put("tvr_tipotracar"      , ""+cFrentes.getString(6));
+                map.put("tvr_codlote"	, "COD:"+cFrentes.getString(7));
+                map.put("tvr_nomlote"	, "LOTE:"+cFrentes.getString(8));
+                map.put("tvr_codtra"	    , "CTRA: "+cFrentes.getString(9));
+                map.put("tvr_nommotor"	    , ""+cFrentes.getString(10));
+                map.put("tvr_fsaling"	    , "FS: "+cFrentes.getString(11));
 
                 map.put("K_ENV0_ID"         , cFrentes.getString(0));
-                map.put("K_ENV2_LOTEDESC"	, cFrentes.getString(2));
-                map.put("K_ENV3_PLACA"	    , cFrentes.getString(3));
-                map.put("K_ENV4_TIPOTRACAR"	, cFrentes.getString(4));
-                map.put("K_ENV5_CODLOTE"	, cFrentes.getString(5));
-                map.put("K_ENV6_CODTRA"	    , cFrentes.getString(6));
-                map.put("ultimoPrecio"	    , cFrentes.getString(10));
-
+                map.put("K_ENV1_PLACA"	, cFrentes.getString(1));
+                map.put("K_ENV2_CODMOTOR"	, cFrentes.getString(2));
+                map.put("K_ENV3_CODCLIE"	    , cFrentes.getString(3));
+                map.put("K_ENV4_ORDENQUEMA"	, cFrentes.getString(4));
+                map.put("K_ENV5_PROCEDENCIA"	, cFrentes.getString(5));
+                map.put("K_ENV6_TIPOTRACAR"	    , cFrentes.getString(6));
+                map.put("K_ENV7_CODLOTE"	    , cFrentes.getString(7));
+                map.put("K_ENV8_NOMLOTE"	    , cFrentes.getString(8));
+                map.put("K_ENV9_CODTRA"	    , cFrentes.getString(9));
+                map.put("K_ENV10_NOMMOTOR"	    , cFrentes.getString(10));
+                map.put("K_ENV11_FSALING"	    , cFrentes.getString(11));
                 myListActivosOcaciones.add(map);
 
             }while(cFrentes.moveToNext());
@@ -115,21 +116,20 @@ public class AdapterEnvios {
 
         String query = "SELECT "
                 + "DISTINCT(a."+dbhelper.K_ENV0_ID+"),  "
-                + " a."+dbhelper.K_ENV1_UMOVDESC	+", "
-                + " a."+dbhelper.K_ENV2_LOTEDESC	+", "
-                + " a."+dbhelper.K_ENV3_PLACA	    +", "
-                + " a."+dbhelper.K_ENV4_TIPOTRACAR	+", "
-                + " IFNULL(( "+queryIntroSubConsultaTotalUnadas+" ), 0) AS TotalUnadas, "
-                + " IFNULL(( "+queryIntroSubConsultaPendientes+" ), 0) AS TotalPendientes "
-
+                + " a."+dbhelper.K_ENV1_PLACA	+", "
+                + " a."+dbhelper.K_ENV2_CODMOTOR	+", "
+                + " a."+dbhelper.K_ENV3_CODCLIE	    +", "
+                + " a."+dbhelper.K_ENV4_ORDENQUEMA	+", "
+                + " a."+dbhelper.K_ENV5_PROCEDENCIA  +", "
+                + " a."+dbhelper.K_ENV6_TIPOTRACAR	    +", "
+                + " a."+dbhelper.K_ENV7_CODLOTE     	+", "
+                + " a."+dbhelper.K_ENV8_NOMLOTE    	+", "
+                + " a."+dbhelper.K_ENV9_CODTRA +", "
+                + " a."+dbhelper.K_ENV10_NOMMOTOR     +" , "
+                + " a."+dbhelper.K_ENV11_FSALING     +"  "
                 + " FROM   "+dbhelper.TABLE_ENVIOS+" AS a "
                 + " WHERE "
                 + " CASE WHEN '"+IDTACO+"' = '' THEN a."+dbhelper.K_ENV0_ID+" = a."+dbhelper.K_ENV0_ID+" ELSE a."+dbhelper.K_ENV0_ID+" = '"+IDTACO+"' END "
-
-                +"  AND ( CASE WHEN '"+FILTRO+"' = '0' THEN a."+dbhelper.K_ENV2_LOTEDESC+" = a."+dbhelper.K_ENV2_LOTEDESC+" ELSE a."+dbhelper.K_ENV2_LOTEDESC+" LIKE '%"+FILTRO+"%' END "
-                + " OR    CASE WHEN '"+FILTRO+"' = '0' THEN a."+dbhelper.K_ENV3_PLACA+" = a."+dbhelper.K_ENV3_PLACA+" ELSE a."+dbhelper.K_ENV3_PLACA+" LIKE '%"+FILTRO+"%' END "
-                + " OR    CASE WHEN '"+FILTRO+"' = '0' THEN a."+dbhelper.K_ENV4_TIPOTRACAR+" = a."+dbhelper.K_ENV4_TIPOTRACAR+" ELSE a."+dbhelper.K_ENV4_TIPOTRACAR+" LIKE '%"+FILTRO+"%' END )"
-
                 ;
 
         Log.i("QUERY", "QUERY: " + query);
@@ -145,13 +145,13 @@ public class AdapterEnvios {
             DatabaseHandler_ dbhelper = new DatabaseHandler_(ctx);
             db = dbhelper.getReadableDatabase();
             String query = "INSERT INTO " + dbhelper.TABLE_ENVIOS_REALIZADOS + " ( "
-                    + dbhelper.K_ENVR1_ENVCOD           + " , "
-                    + dbhelper.K_ENVR2_ENVDESC          + " , "
-                    + dbhelper.K_ENVR3_ESTATUSLOCAL     + " , "
-                    + dbhelper.K_ENVR4_INGRESO_MANUAL
+                    + dbhelper.K_ENVR1_ENVIO           + " , "
+                    //+ dbhelper.K_ENVR2_ENVDESC          + " , "
+                    + dbhelper.K_ENVR15_ESTATUSLOCAL     + " , "
+                    + dbhelper.K_ENVR16_INGRESO_MANUAL
                     + " ) VALUES ( "
                     + " '" + ENVCOD     + "', "
-                    + " '" + ENVDESC    + "', "
+                   // + " '" + ENVDESC    + "', "
                     + " '1', "
                     + " '0'  "
                     +") ";

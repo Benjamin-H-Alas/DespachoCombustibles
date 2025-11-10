@@ -21,57 +21,29 @@ public class AdapterDespachosCombRealizados {
         db = dbhelper.getReadableDatabase();
 
         String query = " SELECT "
-                + dbhelper.K_COMB0_ID          		+ " , "
-                + dbhelper.K_COMB1_NUMTACO          + " , "
-                + dbhelper.K_COMB2_PLACA            + " , "
-                + dbhelper.K_COMB3_NUMTRASP         + " , "
-                + dbhelper.K_COMB4_USUARIO          + " , "
-                + dbhelper.K_COMB5_FECHA            + " , "
-                + dbhelper.K_COMB6_NOS              + " , "
-                + dbhelper.K_COMB7_GAL_BOMBA        + " , "
-                + dbhelper.K_COMB8_GAL_PRECIO       + " , "
-                + dbhelper.K_COMB9_CORTE            + " , "
-                + dbhelper.K_COMB10_CORRELATIVO     + " , "
-                + dbhelper.K_COMB11_LLAVE           + "   "
+                + dbhelper.K_DESP0_ID          		+ " , "
+                + dbhelper.K_DESP1_ENVIO          + " , "
+                + dbhelper.K_DESP4_NOMBRECARD       + " ,  "
+                + dbhelper.K_DESP8_HLLEGA              + " , "
+                + dbhelper.K_DESP10_HCARGA       + " , "
+                + dbhelper.K_DESP12_HSALIDA     + " , "
+                + dbhelper.K_DESP15_LLAVE 	           + " , "
+                + dbhelper.K_DESP17_NOENVIO	           + " , "
+                + dbhelper.K_DESP19_PLACA            + "  "
 
-                +" FROM  " +dbhelper.TABLE_DESPACHO_COMBUSTIBLE	+" a "
+                +" FROM  " +dbhelper.TABLE_DESPACHO_ENVIOS	+" a "
                 +" WHERE "
-                +" ( CASE WHEN '"+FILTRO+"' = '0' THEN a."+dbhelper.K_COMB1_NUMTACO+" = a."+dbhelper.K_COMB1_NUMTACO+" ELSE a."+dbhelper.K_COMB1_NUMTACO+" LIKE '%"+FILTRO+"%' END "
-                +" OR    CASE WHEN '"+FILTRO+"' = '0' THEN a."+dbhelper.K_COMB2_PLACA+" = a."+dbhelper.K_COMB2_PLACA+" ELSE a."+dbhelper.K_COMB2_PLACA+" LIKE '%"+FILTRO+"%' END "
-                +" OR    CASE WHEN '"+FILTRO+"' = '0' THEN a."+dbhelper.K_COMB3_NUMTRASP+" = a."+dbhelper.K_COMB3_NUMTRASP+" ELSE a."+dbhelper.K_COMB3_NUMTRASP+" LIKE '%"+FILTRO+"%' END )"
-
-                +" ORDER BY CAST(a."+dbhelper.K_COMB6_NOS+" as INT) DESC "
+                +" ( CASE WHEN '"+FILTRO+"' = '0' THEN a."+dbhelper.K_DESP1_ENVIO+" = a."+dbhelper.K_DESP1_ENVIO+" ELSE a."+dbhelper.K_DESP1_ENVIO+" LIKE '%"+FILTRO+"%' END) "
+                +" ORDER BY CAST(a."+dbhelper.K_DESP15_LLAVE+" as INT) DESC "
                 ;
 
         Log.i("QUERY", "QUERY: " + query);
 
         ArrayList<HashMap<String, String>> myListActivosOcaciones = new ArrayList<HashMap<String, String>>();
-        String[] fromActivos = new String[] {
-                "tvr_codtrasport",
-                "tvr_placa",
-                "tvr_num_taco",
-                "tvr_fecha",
-                "tvr_galones_bomba",
-                "tvr_galones_precio",
-                "tvr_num_correlativo",
-                "tvr_num_nos",
-                "imgv_candado",
-                "tv_llave",
-                "tvr_num_envio",
-};
-        int[] toActivos = new int[] {
-                R.id.tvr_codtrasport,
-                R.id.tvr_placa,
-                R.id.tvr_num_taco,
-                R.id.tvr_fecha,
-                R.id.tvr_galones_bomba,
-                R.id.tvr_galones_precio,
-                R.id.tvr_num_correlativo,
-                R.id.tvr_num_nos,
-                R.id.imgv_candado,
-                R.id.tv_llave,
-                R.id.tvr_num_envio,
-};
+
+
+        String[] fromActivos = new String[] {"tvr_num_taco","tvr_nomcargador","tvr_hllega","tvr_hcarga","tvr_hsalida","tv_llave","imgv_candado","tvr_Envio","tvr_placa"};
+        int[] toActivos = new int[] {R.id.tvr_num_taco,R.id.tvr_nomcargador,R.id.tvr_hllega,R.id.tvr_hcarga,R.id.tvr_hsalida,R.id.tv_llave, R.id.imgv_candado,R.id.tvr_Envio,R.id.tvr_placa};
 
         Cursor cFrentes = db.rawQuery(query, null);
 
@@ -80,26 +52,23 @@ public class AdapterDespachosCombRealizados {
                 HashMap<String, String> map = new HashMap<String, String>();
 
                 map.put("tvr_num_taco"          , "TACO: "+cFrentes.getString(1));
-                map.put("tvr_placa"             , "PLACA: "+cFrentes.getString(2));
-                map.put("tvr_codtrasport"       , "COD TRANSPORTISTA: " + cFrentes.getString(3));
-                map.put("tvr_fecha"             , "FECHA: "+cFrentes.getString(5));
-                map.put("tvr_num_nos"           , "N.O.S: "+cFrentes.getString(6));
-                map.put("tvr_galones_bomba"     , "GALONES: "+cFrentes.getString(7));
-                map.put("tvr_galones_precio"    , "PRECIO: "+cFrentes.getString(8));
-                map.put("tvr_num_correlativo"   , "Numero Correlativo: "+cFrentes.getString(10));
-                map.put("tvr_num_envio"         , "Total: "+(Double.parseDouble(cFrentes.getString(7))*Double.parseDouble(cFrentes.getString(8))));
+                map.put("tvr_nomcargador"          , "CARG: "+cFrentes.getString(2));
+                map.put("tvr_hllega"            , "LLEGO: "+cFrentes.getString(3));
+                map.put("tvr_hcarga"   , "CARGO: "+cFrentes.getString(4));
+                map.put("tvr_hsalida"   , "SALIO: "+cFrentes.getString(5));
+                map.put("tv_llave", "LLAVE: " + cFrentes.getString(6));
+                map.put("tvr_Envio", "NO ENVIO: " + cFrentes.getString(7));
+                map.put("tvr_placa", "PLACA: " + cFrentes.getString(8));
 
-                map.put("tv_llave", "LLAVE: " + cFrentes.getString(11));
-                map.put("key_llave", cFrentes.getString(11));
 
-                if (Integer.parseInt(cFrentes.getString(11).toString()) > 0) {
+                if (Integer.parseInt(cFrentes.getString(6).toString()) > 0) {
                     map.put("imgv_candado", "" + R.drawable.close);
                 } else {
                     map.put("imgv_candado", "" + R.drawable.open);
                 }
 
-                map.put("K_COMB0_ID", cFrentes.getString(0));
-                map.put("K_COMB11_LLAVE", cFrentes.getString(11));
+                map.put("K_DESP0_ID", cFrentes.getString(0));
+                map.put("K_DESP15_LLAVE", cFrentes.getString(6));
 
                 myListActivosOcaciones.add(map);
 

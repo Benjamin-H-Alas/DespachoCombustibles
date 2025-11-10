@@ -10,18 +10,18 @@
     tools:context=".ActMenuInicio">
 
     <Button
+        android:id="@+id/btn_dispensarCombustible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dispensar Combustible"
-        android:id="@+id/btn_dispensarCombustible"
-        android:background="@drawable/boton_gris"
-        android:textColor="#FFFFFF"
-        android:padding="40dp"
-        android:textSize="25px"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="91dp"
+        android:background="@drawable/boton_gris"
         android:onClick="btn_dispensarCombustible"
-        android:layout_marginTop="91dp" />
+        android:padding="40dp"
+        android:text="INGRESAR ENVIO"
+        android:textColor="#FFFFFF"
+        android:textSize="25px" />
 
     <Button
         android:layout_width="wrap_content"

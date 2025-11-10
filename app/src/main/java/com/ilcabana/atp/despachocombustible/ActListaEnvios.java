@@ -1,8 +1,10 @@
 package com.ilcabana.atp.despachocombustible;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,11 +15,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.text.format.Time;
 import android.util.Log;
@@ -27,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -36,16 +36,20 @@ import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
+
 
 import com.ilcabana.atp.database.DatabaseHandler_;
 
-import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
+//mport java.time.LocalDateTime;
+//import java.time.format.DateTimeFormatter;
 
 import com.ilcabana.atp.library.Httppostaux;
 
@@ -56,8 +60,8 @@ public class ActListaEnvios extends AppCompatActivity implements SearchView.OnQu
     SQLiteDatabase db;
     DatabaseHandler_ dbhelper;
     int tipoLista;
-    TableLayout tbl_btn_fecha_hora_quema;
-//sdsdjsd
+    TableLayout tbl_btn_fecha_hora_quema,tbl_btn_fecha_hora_Corta,tbl_btn_fecha_hora_llega,tbl_btn_fecha_hora_Carga,tbl_btn_fecha_hora_Salida;
+    private int mYear, mMonth, mDay, mHour, mMinute;
     SimpleAdapter simpleAdaptador;
     private SearchView mSearchView;
     Context ctx = this;
@@ -68,13 +72,17 @@ public class ActListaEnvios extends AppCompatActivity implements SearchView.OnQu
     ClassDescargarInicioApp classDescargarInicioApp;
     String TacoNumero = "0";
     String PlacaNumero = "0";
-    TextView tv_fecha_quin;
-    EditText txt_codTransportista, txt_placa, txt_num_nos, txt_num_correlativo, txt_precioGalon, txt_galonesBomba, txt_comentario, txt_num_taco; //txt_num_uniadas_otro_frente
-    //TextInputLayout laytxt_uniadas_otro_frente;
-    Spinner spinner_numcorte;
-    private int mYear, mMonth, mDay;
+    TextView tv_fecha_quin,txtDate, txtHora,txtDatel, txtHoral,txtDatec, txtHorac,txtDates, txtHoras,tv_searchFechallega,tv_searchFechaCorta,tv_searchFechaCarga,tv_searchFechaSalida,txt_Observaciones,tv_searchHoraCorta,tv_searchHorallega,tv_searchHoraCarga,tv_searchHoraSalida,txt_oc;
+    EditText txt_placa;
+    TextView txt_Envio;
+    EditText txt_num_taco;
+    EditText txt_FsalIng;
+    Spinner spinner_Cargadora,spinner_Cargador,spinner_Cana;
     String fechaNewAplicacion = "";
+    double CantidadOriginal;
+    CheckBox checkBox_UltimoEn;
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,94 +90,345 @@ public class ActListaEnvios extends AppCompatActivity implements SearchView.OnQu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        tbl_btn_fecha_hora_Corta = (TableLayout)findViewById(R.id.tbl_btn_fecha_hora_Corta);
+        tbl_btn_fecha_hora_llega = (TableLayout)findViewById(R.id.tbl_btn_fecha_hora_llega);
+        tbl_btn_fecha_hora_Carga = (TableLayout)findViewById(R.id.tbl_btn_fecha_hora_Carga);
+        tbl_btn_fecha_hora_Salida = (TableLayout)findViewById(R.id.tbl_btn_fecha_hora_Salida);
+        txtDate = (TextView) findViewById(R.id.tv_searchFechaCorta);
+        txtHora = (TextView) findViewById(R.id.tv_searchHoraCorta);
+        txtDatel = (TextView) findViewById(R.id.tv_searchFechallega);
+        txtHoral = (TextView) findViewById(R.id.tv_searchHorallega);
+        txtDatec = (TextView) findViewById(R.id.tv_searchFechaCarga);
+        txtHorac = (TextView) findViewById(R.id.tv_searchHoraCarga);
+        txtDates = (TextView) findViewById(R.id.tv_searchFechaSalida);
+        txtHoras = (TextView) findViewById(R.id.tv_searchHoraSalida);
+
+        tbl_btn_fecha_hora_Corta.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+                tbl_btn_fecha_hora_Corta.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_light));
+                    final Calendar c = Calendar.getInstance();
+                    mYear = c.get(Calendar.YEAR);
+                    mMonth = c.get(Calendar.MONTH);
+                    mDay = c.get(Calendar.DAY_OF_MONTH);
+                    // Launch Date Picker Dialog
+                    DatePickerDialog dpd = new DatePickerDialog(ActListaEnvios.this,
+                            new DatePickerDialog.OnDateSetListener() {
+
+                                @Override
+                                public void onDateSet(DatePicker view, int year,
+                                                      int monthOfYear, int dayOfMonth) {
+                                    // Display Selected date in textbox
+                                    txtDate.setText(dayOfMonth +"-"+ (monthOfYear + 1) +"-"+ year);
+                                    final Calendar c = Calendar.getInstance();
+                                    mYear =  c.get(Calendar.YEAR);
+                                    mMonth = c.get(Calendar.MONTH);
+                                    mDay =   c.get(Calendar.DAY_OF_MONTH);
+
+                                    // Launch Time Picker Dialog
+                                    TimePickerDialog tpd = new TimePickerDialog(ActListaEnvios.this, new TimePickerDialog.OnTimeSetListener() {
+
+                                        @Override
+                                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                            txtHora.setText(hourOfDay + ":" + minute);
+                                            tbl_btn_fecha_hora_Corta.setBackgroundColor(getResources().getColor(R.color.gris333));
+                                        }
+                                    }, mHour, mMinute, true);//true= boolean is24HourView
+                                    tpd.show();
+                                }
+                            }, mYear, mMonth, mDay);
+                    dpd.show();
+            }
+        });
+        tbl_btn_fecha_hora_llega.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+                tbl_btn_fecha_hora_llega.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_light));
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+                // Launch Date Picker Dialog
+                DatePickerDialog dpd = new DatePickerDialog(ActListaEnvios.this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+                                // Display Selected date in textbox
+                                txtDatel.setText(dayOfMonth +"-"+ (monthOfYear + 1) +"-"+ year);
+                                final Calendar c = Calendar.getInstance();
+                                mYear =  c.get(Calendar.YEAR);
+                                mMonth = c.get(Calendar.MONTH);
+                                mDay =   c.get(Calendar.DAY_OF_MONTH);
+
+                                // Launch Time Picker Dialog
+                                TimePickerDialog tpd = new TimePickerDialog(ActListaEnvios.this, new TimePickerDialog.OnTimeSetListener() {
+
+                                    @Override
+                                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                        txtHoral.setText(hourOfDay + ":" + minute);
+                                        tbl_btn_fecha_hora_llega.setBackgroundColor(getResources().getColor(R.color.gris333));
+                                    }
+                                }, mHour, mMinute, true);//true= boolean is24HourView
+                                tpd.show();
+                            }
+                        }, mYear, mMonth, mDay);
+                dpd.show();
+            }
+        });
+        tbl_btn_fecha_hora_Carga.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+                tbl_btn_fecha_hora_Carga.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_light));
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+                // Launch Date Picker Dialog
+                DatePickerDialog dpd = new DatePickerDialog(ActListaEnvios.this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+                                // Display Selected date in textbox
+                                txtDatec.setText(dayOfMonth +"-"+ (monthOfYear + 1) +"-"+ year);
+                                final Calendar c = Calendar.getInstance();
+                                mYear =  c.get(Calendar.YEAR);
+                                mMonth = c.get(Calendar.MONTH);
+                                mDay =   c.get(Calendar.DAY_OF_MONTH);
+
+                                // Launch Time Picker Dialog
+                                TimePickerDialog tpd = new TimePickerDialog(ActListaEnvios.this, new TimePickerDialog.OnTimeSetListener() {
+
+                                    @Override
+                                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                        txtHorac.setText(hourOfDay + ":" + minute);
+                                        tbl_btn_fecha_hora_Carga.setBackgroundColor(getResources().getColor(R.color.gris333));
+                                    }
+                                }, mHour, mMinute, true);
+                                tpd.show();
+                            }
+                        }, mYear, mMonth, mDay);
+                dpd.show();
+            }
+        });
+        tbl_btn_fecha_hora_Salida.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+                tbl_btn_fecha_hora_Salida.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_light));
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+                // Launch Date Picker Dialog
+                DatePickerDialog dpd = new DatePickerDialog(ActListaEnvios.this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+                                // Display Selected date in textbox
+                                txtDates.setText(dayOfMonth +"-"+ (monthOfYear + 1) +"-"+ year);
+                                final Calendar c = Calendar.getInstance();
+                                mYear =  c.get(Calendar.YEAR);
+                                mMonth = c.get(Calendar.MONTH);
+                                mDay =   c.get(Calendar.DAY_OF_MONTH);
+
+                                // Launch Time Picker Dialog
+                                TimePickerDialog tpd = new TimePickerDialog(ActListaEnvios.this, new TimePickerDialog.OnTimeSetListener() {
+
+                                    @Override
+                                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                        txtHoras.setText(hourOfDay + ":" + minute);
+                                        tbl_btn_fecha_hora_Salida.setBackgroundColor(getResources().getColor(R.color.gris333));
+                                    }
+                                }, mHour, mMinute, true);
+                                tpd.show();
+                            }
+                        }, mYear, mMonth, mDay);
+                dpd.show();
+            }
+        });
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*
-                Snackbar.make(view, "Opcion en mantenimiento"+spinner_numcorte.getSelectedItem().toString(), Snackbar.LENGTH_LONG)
-                        .setAction("Accion", null).show();
-                */
-                if(txt_comentario.getText().toString().equals(""))
-                    txt_comentario.setText("0");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                String FHsalingS = txt_FsalIng.getText().toString();
 
-                if(     txt_comentario.getText().toString().equals("")
+                String Fllega = tv_searchFechallega.getText().toString();
+                String Hllega = tv_searchHorallega.getText().toString();
+
+                String Fcarga = tv_searchFechaCarga.getText().toString();
+                String Hcarga  = tv_searchHoraCarga.getText().toString();
+
+                String Fsalida = tv_searchFechaSalida.getText().toString();
+                String Hsalida = tv_searchHoraSalida.getText().toString();
+
+                //String FHsalingS = Fsaling;
+                Date FHsaling = null;
+                try {
+                    FHsaling = sdf.parse(FHsalingS);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    Toast.makeText(ctx, FHsalingS, Toast.LENGTH_SHORT).show();
+                }
+
+                String FHllegaS = Fllega +" "+ Hllega;
+                Date FHllega = null;
+                 try {
+                    FHllega = sdf.parse(FHllegaS);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                     Toast.makeText(ctx, FHllegaS, Toast.LENGTH_SHORT).show();
+
+                }
+                String FHcargaS = Fcarga  +" "+ Hcarga ;
+                Date FHcarga = null;
+                try {
+                    FHcarga = sdf.parse(FHcargaS);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    Toast.makeText(ctx, FHcargaS, Toast.LENGTH_SHORT).show();
+                }
+
+                String FHsalidaS = Fsalida  +" "+ Hsalida ;
+                Date FHsalida = null;
+                try {
+                    FHsalida = sdf.parse(FHsalidaS);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    Toast.makeText(ctx, FHsalidaS, Toast.LENGTH_SHORT).show();
+                }
+
+                if (FHllega.compareTo(FHsaling) > 0) {
+                    Toast.makeText(ctx, "La FEHCHA,HORA de LLEGADA no puede ser MENOR  a  SALIDA", Toast.LENGTH_SHORT).show();
+                    txt_num_taco.setText("");
+                }
+                if(FHllega.compareTo(FHcarga) > 0) {
+                    Toast.makeText(ctx, "La FEHCA,HORA de CARGA no puede ser MENOR  a  LLEGADA", Toast.LENGTH_SHORT).show();
+                    txt_num_taco.setText("");
+                }
+
+                if(FHcarga.compareTo(FHsalida) > 0) {
+                    Toast.makeText(ctx, "La FECHA,HORA de SALIDA no puede ser MENOR  a CARGA", Toast.LENGTH_SHORT).show();
+                    txt_num_taco.setText("");
+                }
+
+
+                if(      txt_num_taco.getText().toString().equals("")
+                        || txt_Envio.getText().toString().equals("")
+                        || tv_searchFechaCorta.getText().toString().equals("")
+                        || tv_searchFechallega.getText().toString().equals("")
+                        || tv_searchFechallega.getText().toString().equals("")
+                        || tv_searchFechaSalida.getText().toString().equals("")
                         || txt_placa.getText().toString().equals("")
-                        || txt_num_taco.getText().toString().equals("")
 
-                        || txt_precioGalon.getText().toString().equals("")
-                        || txt_galonesBomba.getText().toString().equals("")
-                        || txt_num_nos.getText().toString().equals("")
-                        || txt_num_correlativo.getText().toString().equals("")
                         )
                 {
-                    Toast.makeText(ctx, "Todos los campos con arterisco son obligatorios", Toast.LENGTH_SHORT).show();
-                    Snackbar.make(view, "Todos los campos con arterisco son obligatorios", Snackbar.LENGTH_LONG)
+                    Toast.makeText(ctx, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(view, "Todos los campos son obligatorios", Snackbar.LENGTH_LONG)
                             .setAction("Advertencia", null).show();
-                }else {
-                    if (Config.key_codigoUser.equals("") || Config.key_codigoUser.equals(null)) {
-                        Toast.makeText(ctx, "Inicie sesion de nuevo", Toast.LENGTH_SHORT).show();
-                    } else{ if (setInsertDespachoCombustible(
-                            txt_num_taco.getText().toString(),
-                            txt_placa.getText().toString(),
-                            txt_codTransportista.getText().toString(),
-                            Config.key_codigoUser,
-                            FECHA_DIA,
-                            txt_num_nos.getText().toString(),
-                            txt_galonesBomba.getText().toString(),
-                            txt_precioGalon.getText().toString(),
-                            spinner_numcorte.getSelectedItem().toString(),
-                            txt_num_correlativo.getText().toString()
-                    )) {
-                        if (verificaConexion(ctx)) {
-                            metodoRespaldarEnvios();
-                        } else {
-                            Toast.makeText(ctx, "No hay conexión a Internet, verifique y reintentar", Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(ctx, ActDespachoCombustible.class);
-                            startActivity(i);
-                        }
-                    }
-                }
-                }
 
+                }else {
+
+                            if (setInsertDespachoCombustible(
+                                    txt_num_taco.getText().toString(),
+                                    getCargadora(spinner_Cargadora.getSelectedItem().toString()),
+                                    getCargadorCode(spinner_Cargador.getSelectedItem().toString()),
+                                    getCargadorName(spinner_Cargador.getSelectedItem().toString()),
+                                    tv_searchFechaCorta.getText().toString(),
+                                    tv_searchHoraCorta.getText().toString(),
+                                    tv_searchFechallega.getText().toString(),
+                                    tv_searchHorallega.getText().toString(),
+                                    tv_searchFechaCarga.getText().toString(),
+                                    tv_searchHoraCarga.getText().toString(),
+                                    tv_searchFechaSalida.getText().toString(),
+                                    tv_searchHoraSalida.getText().toString(),
+                                    txt_Observaciones.getText().toString(),
+                                    checkBox_UltimoEn.isChecked()?"1":"0",
+                                    txt_oc.getText().toString(),
+                                    txt_Envio.getText().toString(),
+                                    getCana(spinner_Cana.getSelectedItem().toString()),
+                                    txt_placa.getText().toString()
+
+                            )) {
+                                if (verificaConexion(ctx)) {
+                                    metodoRespaldarEnvios();
+                                    Toast.makeText(ctx, "hay conexión a Internet", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(ctx, "No hay conexión a Internet, verifique y reintentar", Toast.LENGTH_SHORT).show();
+                                    Intent i = new Intent(ctx, EnviosRealizados.class);
+                                    startActivity(i);
+                                }
+                            }
+                        }
+
+                    }
+            private String getCana(String toString) {
+                String[] separados = toString.split("-");
+                return separados[0];
             }
+            private String getCargadora(String toString) {
+                String[] separados = toString.split("-");
+                return separados[0];
+            }
+            private String getCargadorCode(String toString) {
+
+                String[] separados = toString.split("-");
+                return separados[1];
+            }
+            private String getCargadorName(String toString) {
+
+                String[] separados = toString.split("-");
+                return separados[0];
+            }
+
         });
 
-        txt_codTransportista = (EditText)findViewById(R.id.txt_codTransportista);
-        txt_placa           = (EditText)findViewById(R.id.txt_placa);
         txt_num_taco        = (EditText)findViewById(R.id.txt_num_taco);
-        txt_precioGalon     = (EditText)findViewById(R.id.txt_precioGalon);
-        txt_galonesBomba    = (EditText)findViewById(R.id.txt_galonesBomba);
-        txt_num_nos         = (EditText)findViewById(R.id.txt_num_nos);
-        txt_num_correlativo = (EditText)findViewById(R.id.txt_num_correlativo);
-
-        txt_comentario = (EditText)findViewById(R.id.txt_comentario);
+        spinner_Cargadora = (Spinner) findViewById(R.id.spinner_Cargadora);
+        spinner_Cargador = (Spinner) findViewById(R.id.spinner_Cargador);
+        txt_placa           = (EditText)findViewById(R.id.txt_placa);
+        txt_FsalIng           = (EditText)findViewById(R.id.txt_FsalIng);
+        tv_searchFechaCorta     = (TextView) findViewById(R.id.tv_searchFechaCorta);
+        tv_searchHoraCorta     = (TextView) findViewById(R.id.tv_searchHoraCorta);
+        tv_searchFechallega     = (TextView) findViewById(R.id.tv_searchFechallega);
+        tv_searchHorallega     = (TextView) findViewById(R.id.tv_searchHorallega);
+        tv_searchFechaCarga     = (TextView) findViewById(R.id.tv_searchFechaCarga);
+        tv_searchHoraCarga    = (TextView) findViewById(R.id.tv_searchHoraCarga);
+        tv_searchFechaSalida     = (TextView) findViewById(R.id.tv_searchFechaSalida);
+        tv_searchHoraSalida     = (TextView) findViewById(R.id.tv_searchHoraSalida);
+        txt_Observaciones    = (EditText)findViewById(R.id.txt_Observaciones);
+        checkBox_UltimoEn         = (CheckBox) findViewById(R.id.checkBox_UltimoEn);
+        txt_oc                 = (TextView)findViewById(R.id.txt_oc );
+        txt_Envio         = (TextView) findViewById(R.id.txt_Envio);
+        spinner_Cana = (Spinner) findViewById(R.id.spinner_Cana);
 
 
         classDescargarInicioApp = new ClassDescargarInicioApp(this);
         post     = new Httppostaux();
         dbhelper = new DatabaseHandler_(this);
 
-
-        //txt_num_uniadas_otro_frente.setEnabled(false);
-        /*
-        txt_uniadas.setOnLongClickListener(new View.OnLongClickListener() {
-
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(ctx,"Campo habilitado para digitar las uñadas de la otra cuadrilla", Toast.LENGTH_LONG).show();
-                laytxt_uniadas_otro_frente.setHint("Uñadas otro frente");
-                txt_num_uniadas_otro_frente.setEnabled(true);
-                //((Activity)mContext).openContextMenu(v);
-                return true;
-            }
-        });
-        */
-
         COD_QUINCENA 	= "1";//getIntent().getExtras().getString("COD_QUINCENA");
         FECHA_DIA 		= getFecha();//getIntent().getExtras().getString("FECHA_DIA");
-        NOMBRE_DIA      = "Lunes";//getIntent().getExtras().getString("NOMBRE_DIA");
+        NOMBRE_DIA      = "";//getIntent().getExtras().getString("NOMBRE_DIA");
         ENV0_ID 		= "";//getIntent().getExtras().getString("ENV0_ID");
 
         tv_fecha_quin = (TextView)findViewById(R.id.tv_fecha_quin);
@@ -192,49 +451,28 @@ public class ActListaEnvios extends AppCompatActivity implements SearchView.OnQu
             public void onItemClick(AdapterView<?> arg0, View vista,
                                     int posicion, long arg3) {
                 HashMap<?, ?> itemList = (HashMap<?, ?>) lv_envios.getItemAtPosition(posicion);
-
                 ENV0_ID = itemList.get("K_ENV0_ID").toString();
-                NUMTACO = itemList.get("K_ENV0_ID").toString();
-                CODLOTE = itemList.get("K_ENV5_CODLOTE").toString();
-                DESCLOTE = itemList.get("K_ENV2_LOTEDESC").toString();
-
-                txt_placa.setText(itemList.get("K_ENV3_PLACA").toString());
-                txt_num_taco.setText(itemList.get("K_ENV0_ID").toString());
-                txt_codTransportista.setText(itemList.get("K_ENV6_CODTRA").toString());
-                txt_precioGalon.setText(itemList.get("ultimoPrecio").toString());
-
+               txt_num_taco.setText(itemList.get("K_ENV0_ID").toString());
+                txt_placa.setText(itemList.get("K_ENV1_PLACA").toString());
+                txt_FsalIng.setText(itemList.get("K_ENV11_FSALING").toString());
+                txt_oc.setText(itemList.get("K_ENV4_ORDENQUEMA").toString());
+            
             }
         });
+        spinner_Cana = (Spinner)findViewById(R.id.spinner_Cana);
+        ArrayAdapter<String> spinnerCanaArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.Cana));
+        spinner_Cana.setAdapter(spinnerCanaArrayAdapter);
 
-        txt_galonesBomba.addTextChangedListener(new TextWatcher() {
+        spinner_Cargadora = (Spinner)findViewById(R.id.spinner_Cargadora);
+        ArrayAdapter<String> spinnerCargadoraArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.Cargadora));
+        spinner_Cargadora.setAdapter(spinnerCargadoraArrayAdapter);
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                DecimalFormat df = new DecimalFormat("########.##");
-                txt_comentario.setText("Total: "+Double.parseDouble(validarCampoVacio(txt_precioGalon.getText().toString())) * Double.parseDouble(validarCampoVacio(txt_galonesBomba.getText().toString())));
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-
-            }
-        });
-
-        spinner_numcorte = (Spinner)findViewById(R.id.spinner_numcorte);
-        ArrayAdapter<String> spinnerPorcentajeArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.porcentaje_carga));
-        spinner_numcorte.setAdapter(spinnerPorcentajeArrayAdapter);
-
+        spinner_Cargador = (Spinner)findViewById(R.id.spinner_Cargador);
+        ArrayAdapter<String> spinnerCargadorArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.Cargador));
+        spinner_Cargador.setAdapter(spinnerCargadorArrayAdapter);
 
         addTaco();
     }
-
-
 
     public boolean onQueryTextChange(String newText) {
 
@@ -256,24 +494,6 @@ public class ActListaEnvios extends AppCompatActivity implements SearchView.OnQu
 
         return true;
     }
-
-/*
-    public static boolean verificaConexion(Context ctx) {
-        boolean bConectado = false;
-        ConnectivityManager connec = (ConnectivityManager) ctx
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        // No sólo wifi, también GPRS
-        NetworkInfo[] redes = connec.getAllNetworkInfo();
-        // este bucle debería no ser tan mapa
-        for (int i = 0; i < 2; i++) {
-            // Tenemos conexión? ponemos a true
-            if (redes[i].getState() == NetworkInfo.State.CONNECTED) {
-                bConectado = true;
-            }
-        }
-        return bConectado;
-    }
-*/
 
     public String getFecha (){
         Calendar c = Calendar.getInstance();
@@ -339,27 +559,22 @@ public class ActListaEnvios extends AppCompatActivity implements SearchView.OnQu
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         final EditText txtNumTaco = Config.txtCapturaNumDecimal("Numero Taco","", this);
-        //final EditText txtNumPlaca = Config.txtCapturaTexto("Numero Placa","", this);
 
         Log.i("ADD NUMERO DE TACO", " 2 ");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
         layout.addView(txtNumTaco);
-        //layout.addView(txtNumPlaca);
         builder.setView(layout);
 
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+
+
             public void onClick(DialogInterface dialog, int which) {
                 TacoNumero = txtNumTaco.getText().toString();
-                //PlacaNumero = txtNumPlaca.getText().toString();
 
+               // txt_num_taco.setText(txtNumTaco.getText().toString());
                 metodoIniciarDescargaEnvios();
-                /*
-                if ((Double.parseDouble(validarCampoVacio( txtCantidad.getText().toString() )) > 0)) {
-                    TacoNumero = txtCantidad.getText().toString();
-                    metodoIniciarDescargaEnvios();
-                }
-                */
+
             }
         });
         builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -389,7 +604,7 @@ public class ActListaEnvios extends AppCompatActivity implements SearchView.OnQu
         Intent i= getIntent();
         this.setResult(this.RESULT_OK, i);
         finish();
-        Intent e= new Intent(this, ActDespachoCombustible.class);
+        Intent e= new Intent(this, EnviosRealizados.class);
         startActivity(e);
     }
 
@@ -398,7 +613,7 @@ public class ActListaEnvios extends AppCompatActivity implements SearchView.OnQu
         i.putExtra("ENV0_ID", ENV0_ID);
         this.setResult(this.RESULT_CANCELED, i);
         finish();
-        Intent e= new Intent(this, ActDespachoCombustible.class);
+        Intent e= new Intent(this, EnviosRealizados.class);
         startActivity(e);
     }
 
@@ -436,7 +651,7 @@ public class ActListaEnvios extends AppCompatActivity implements SearchView.OnQu
             switch (numActividad) {
 
                 case 1:
-                        if (classDescargarInicioApp.ws_bajarListadoEnviosPagoTonelada(validarCampoVacio(TacoNumero), "0")
+                        if (classDescargarInicioApp.ws_bajarListadoEnvios(validarCampoVacio(TacoNumero), "0")
                                 ){
                             return true;
                         }else{
@@ -450,7 +665,7 @@ public class ActListaEnvios extends AppCompatActivity implements SearchView.OnQu
                             return false;
                         }
                 case 2:
-                    if (classDescargarInicioApp.ws_guardarNuevoMovimientoCombustible("0")){
+                    if (classDescargarInicioApp.ws_guardarNuevoMovimientoEnvio("0")){
                         return true;
                     }else{
                         if(isCancelled())
@@ -533,46 +748,71 @@ public class ActListaEnvios extends AppCompatActivity implements SearchView.OnQu
     }
 
     public boolean setInsertDespachoCombustible(
-            String K_COMB1_NUMTACO,
-            String K_COMB2_PLACA,
-            String K_COMB3_NUMTRASP,
-            String K_COMB4_USUARIO,
-            String K_COMB5_FECHA,
-            String K_COMB6_NOS,
-            String K_COMB7_GAL_BOMBA,
-            String K_COMB8_GAL_PRECIO,
-            String K_COMB9_CORTE,
-            String K_COMB10_CORRELATIVO
-    ){
+            String K_DESP1_ENVIO,
+            String K_DESP2_CARGADORA,
+            String K_DESP3_CARGADOR,
+            String K_DESP4_NOMBRECARD,
+            String K_DESP5_FCORTA,
+            String K_DESP6_HCORTA,
+            String K_DESP7_FLLEGA,
+            String K_DESP8_HLLEGA,
+            String K_DESP9_FCARGA,
+            String K_DESP10_HCARGA,
+            String K_DESP11_FSALIDA,
+            String K_DESP12_HSALIDA,
+            String K_DESP13_OBSERV,
+            String K_DESP14_ULTIMOENV,
+            String K_DESP16_OC,
+            String K_DESP17_NOENVIO,
+            String K_DESP18_TIPCANA,
+            String K_DESP19_PLACA)
+
+            {
         try {
             SQLiteDatabase db;
             DatabaseHandler_ dbhelper = new DatabaseHandler_(ctx);
             db = dbhelper.getReadableDatabase();
-            String query = "INSERT INTO " + dbhelper.TABLE_DESPACHO_COMBUSTIBLE + " ( "
-                    + dbhelper.K_COMB1_NUMTACO          + " , "
-                    + dbhelper.K_COMB2_PLACA            + " , "
-                    + dbhelper.K_COMB3_NUMTRASP         + " , "
-                    + dbhelper.K_COMB4_USUARIO          + " , "
-                    + dbhelper.K_COMB5_FECHA            + " , "
-                    + dbhelper.K_COMB6_NOS              + " , "
-                    + dbhelper.K_COMB7_GAL_BOMBA        + " , "
-                    + dbhelper.K_COMB8_GAL_PRECIO       + " , "
-                    + dbhelper.K_COMB9_CORTE            + " , "
-                    + dbhelper.K_COMB10_CORRELATIVO     + " , "
-                    + dbhelper.K_COMB11_LLAVE           + "   "
+            String query = "INSERT INTO " + dbhelper.TABLE_DESPACHO_ENVIOS + " ( "
+                    + dbhelper.K_DESP1_ENVIO             + " , "
+                    + dbhelper.K_DESP2_CARGADORA         + " , "
+                    + dbhelper.K_DESP3_CARGADOR          + " , "
+                    + dbhelper.K_DESP4_NOMBRECARD       + " , "
+                    + dbhelper.K_DESP5_FCORTA            + " , "
+                    + dbhelper.K_DESP6_HCORTA            + " , "
+                    + dbhelper.K_DESP7_FLLEGA            + " , "
+                    + dbhelper.K_DESP8_HLLEGA            + " , "
+                    + dbhelper.K_DESP9_FCARGA            + " , "
+                    + dbhelper.K_DESP10_HCARGA            + " , "
+                    + dbhelper.K_DESP11_FSALIDA          + " , "
+                    + dbhelper.K_DESP12_HSALIDA          + " , "
+                    + dbhelper.K_DESP13_OBSERV           + " , "
+                    + dbhelper.K_DESP14_ULTIMOENV        + " , "
+                    + dbhelper.K_DESP15_LLAVE         + " , "
+                    + dbhelper.K_DESP16_OC           + " ,  "
+                    + dbhelper.K_DESP17_NOENVIO      + " ,  "
+                    + dbhelper.K_DESP18_TIPCANA      + " ,  "
+                    + dbhelper.K_DESP19_PLACA        + "   "
 
                     + " ) VALUES ( "
-                    + " '" + K_COMB1_NUMTACO            + "' , "
-                    + " '" + K_COMB2_PLACA              + "' , "
-                    + " '" + K_COMB3_NUMTRASP           + "' , "
-                    + " '" + K_COMB4_USUARIO            + "' , "
-                    + " '" + K_COMB5_FECHA              + "' , "
-                    + " '" + K_COMB6_NOS                + "' , "
-                    + " '" + K_COMB7_GAL_BOMBA          + "' , "
-                    + " '" + K_COMB8_GAL_PRECIO         + "' , "
-                    + " '" + K_COMB9_CORTE              + "' , "
-                    + " '" + K_COMB10_CORRELATIVO       + "' , "
-                    + " '0'   "
+                    + " '" + K_DESP1_ENVIO           + "' , "
+                    + " '" + K_DESP2_CARGADORA        + "' , "
+                    + " '" + K_DESP3_CARGADOR         + "' , "
+                    + " '" + K_DESP4_NOMBRECARD         + "' , "
+                    + " '" + K_DESP5_FCORTA         + "' , "
+                    + " '" + K_DESP6_HCORTA         + "' , "
+                    + " '" + K_DESP7_FLLEGA          + "' , "
+                    + " '" + K_DESP8_HLLEGA          + "' , "
+                    + " '" + K_DESP9_FCARGA          + "' , "
+                    + " '" + K_DESP10_HCARGA          + "' , "
+                    + " '" + K_DESP11_FSALIDA         + "' , "
+                    + " '" + K_DESP12_HSALIDA         + "' , "
+                    + " '" + K_DESP13_OBSERV      + "' , "
+                    + " '" + K_DESP14_ULTIMOENV     + "' , "
+                    + " '0'  , "
+                    + " '" + K_DESP16_OC        + "' , "
+                    + " '" + K_DESP17_NOENVIO   + "' , "
+                    + " '" + K_DESP18_TIPCANA   + "' , "
+                    + " '" + K_DESP19_PLACA     + "'  "
 
                     +" ) "
                     ;
@@ -628,92 +868,10 @@ public class ActListaEnvios extends AppCompatActivity implements SearchView.OnQu
                         fechaNewAplicacion = strDate.toString();
 
                         final Calendar c = Calendar.getInstance();
-                        //final Intent i= new Intent(ctx, DetallesLabores.class);
-                        /*
-                        if(tipoOperacion == 1) {
-                            if (adpLaboresLotes.insertNewAplicacion(ctx, IDSECUENCIA, fechaNewAplicacion)) {
-                                i.putExtra("ID", adpLaboresLotes.ultimoIdMuestra(ctx));
-                                startActivity(i);
-                                finish();
-
-                            }
-                        }else{
-                            addNuevaVisita(fechaNewAplicacion, IDSECUENCIA);
-                        }
-                        */
 
                     }
                 }, mYear, mMonth, mDay);
         dpd.show();
     }
-
-/*
-    public boolean setUpdateCampo(
-            String EN1_ENVCOD,
-            String EN2_ENVDESC,
-            String EN5_COMENTARIO,
-            String EN6_NTACO,
-            String EN7_UNIADAS,
-            String EN8_USUARIO,
-            String EN9_CODLOTE,
-            String EN10_PORCENTAJE,
-            String EN11_FECHAREG,
-            String EN12_FECHADIA,
-            String EN13_RASTRAPLACA,
-            String EN15_QUINID
-    )
-    {
-        try {
-            SQLiteDatabase db;
-            DatabaseHandler_ dbhelper = new DatabaseHandler_(ctx);
-            db = dbhelper.getReadableDatabase();
-            String query = "INSERT INTO " + dbhelper.TABLE_ENVIOS_REALIZADOS + " ( "
-                    + dbhelper.K_ENVR1_ENVCOD           + " , "
-                    + dbhelper.K_ENVR2_ENVDESC          + " , "
-                    + dbhelper.K_ENVR3_ESTATUSLOCAL     + " , "
-                    + dbhelper.K_ENVR4_INGRESO_MANUAL   + " , "
-                    + dbhelper.K_ENVR5_COMENTARIO       + " , "
-                    + dbhelper.K_ENVR6_NTACO            + " , "
-                    + dbhelper.K_ENVR7_UNIADAS          + " , "
-                    + dbhelper.K_ENVR8_USUARIO          + " , "
-                    + dbhelper.K_ENVR9_CODLOTE          + " , "
-                    + dbhelper.K_ENVR10_PORCENTAJE      + " , "
-                    + dbhelper.K_ENVR11_FECHAREG        + " , "
-                    + dbhelper.K_ENVR12_FECHADIA        + " , "
-                    + dbhelper.K_ENVR13_RASTRAPLACA     + " , "
-                    + dbhelper.K_ENVR14_LLAVE           + " , "
-                    + dbhelper.K_ENVR15_QUINID          + "   "
-
-                    + " ) VALUES ( "
-                    + " '" + EN1_ENVCOD         + "' , "
-                    + " '" + EN2_ENVDESC        + "' , "
-                    + " '1' , "
-                    + " '1' , "
-                    + " '" + EN5_COMENTARIO          + "' , "
-                    + " '" + EN6_NTACO          + "' , "
-                    + " '" + EN7_UNIADAS        + "' , "
-                    + " '" + EN8_USUARIO        + "' , "
-                    + " '" + EN9_CODLOTE        + "' , "
-                    + " '" + EN10_PORCENTAJE    + "' , "
-                    + " '" + EN11_FECHAREG      + "' , "
-                    + " '" + EN12_FECHADIA      + "' , "
-                    + " '" + EN13_RASTRAPLACA   + "' , "
-                    + " '0' , "
-                    + " '" + EN15_QUINID        + "'  "
-
-                    +" ) "
-                    ;
-            db.execSQL(query);
-            db.close();
-            Log.e("MI QUERY", "Valor:" + query);
-            return true;
-        }catch( Exception e){
-            Log.e("Exception", "Exception: "+e);
-            return false;
-
-        }
-
-    }
-*/
 
 }

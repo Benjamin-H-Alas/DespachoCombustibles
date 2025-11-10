@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,7 +47,7 @@ public class ActMenuInicio extends AppCompatActivity {
     }
 
     public void btn_consultar (View v){
-        Intent i= new Intent(this, ActDespachoCombustible.class);
+        Intent i= new Intent(this, EnviosRealizados.class);
         startActivity(i);
     }
 }

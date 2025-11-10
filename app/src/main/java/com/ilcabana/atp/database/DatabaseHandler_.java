@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHandler_ extends SQLiteOpenHelper {
 	// All Static variables
 	// Database Version
-	public static final int DATABASE_VERSION = 6;
+	public static final int DATABASE_VERSION = 39;
 
 	// Database Name
 	private static final String DATABASE_NAME = "DESPACHO_COMBUSTIBLE";
@@ -25,21 +25,28 @@ public class DatabaseHandler_ extends SQLiteOpenHelper {
 
 
 	//MOVIMIENTOS DE TABLE_ENVIOS REALIZADOS EN DESPACHOS_REALIZADOS
-	public final String TABLE_DESPACHO_COMBUSTIBLE = "DESPACHO_COMBUSTIBLE";
+	public final String TABLE_DESPACHO_ENVIOS = "DESPACHO_ENVIOS";
 	//ACTIVIDADES DE TRABAJO table columns name
-	public final String K_COMB0_ID 				= "ID_COMBUSTIBLE";
-	public final String K_COMB1_NUMTACO 		= "NUMTACO";
-	public final String K_COMB2_PLACA 			= "PLACA";
-	public final String K_COMB3_NUMTRASP 		= "NUMTRASP";
-	public final String K_COMB4_USUARIO 		= "USUARIO";
-	public final String K_COMB5_FECHA 			= "FECHA";
-	public final String K_COMB6_NOS 			= "NOS";
-	public final String K_COMB7_GAL_BOMBA 		= "GAL_BOMBA";
-	public final String K_COMB8_GAL_PRECIO 		= "GAL_PRECIO";
-	public final String K_COMB9_CORTE 			= "CORTE";
-	public final String K_COMB10_CORRELATIVO 	= "CORRELATIVO";
-	public final String K_COMB11_LLAVE 			= "LLAVE";
-
+	public final String K_DESP0_ID 				   = "DESP_ID";
+	public final String K_DESP1_ENVIO			   = "NUMTACO";
+	public final String K_DESP2_CARGADORA 	 	   = "CARGADORA";
+	public final String K_DESP3_CARGADOR		    = "CARGADOR";
+	public final String K_DESP4_NOMBRECARD 		   = "NOMBRECARD";
+	public final String K_DESP5_FCORTA   	       = "FCORTA";
+	public final String K_DESP6_HCORTA   	       = "HCORTA";
+	public final String K_DESP7_FLLEGA 	 		   = "FLLEGA";
+	public final String K_DESP8_HLLEGA 	 		   = "HLLEGA";
+	public final String K_DESP9_FCARGA 			   = "FCARGA";
+	public final String K_DESP10_HCARGA 		   = "HCARGA";
+	public final String K_DESP11_FSALIDA		   = "FSALIDA";
+	public final String K_DESP12_HSALIDA		   = "HSALIDA";
+	public final String K_DESP13_OBSERV  		   = "OBSERV";
+	public final String K_DESP14_ULTIMOENV 		   = "ULTIMOENV";
+	public final String K_DESP15_LLAVE 		        = "LLAVE";
+	public final String K_DESP16_OC 		        = "OC";
+	public final String K_DESP17_NOENVIO 		    = "NOENVIO";
+	public final String K_DESP18_TIPCANA 		    = "TIPCANA";
+	public final String K_DESP19_PLACA 		        = "PLACA";
 
 	//EMPLEADOS DE LA PLANILLA --> EMPLEADOS
 	public  final String TABLE_EMPLEADOS 		= "EMPLEADOS";
@@ -129,37 +136,40 @@ public class DatabaseHandler_ extends SQLiteOpenHelper {
 	public  final String TABLE_ENVIOS 			= "ENVIOS";
 	//ACTIVIDADES DE TRABAJO table columns name
 	public  final String K_ENV0_ID 		    	= "ID_ENVIO";
-	public  final String K_ENV1_UMOVDESC 		= "UMOVDESC";
-	public  final String K_ENV2_LOTEDESC 		= "LOTEDESC";
-	public  final String K_ENV3_PLACA 			= "PLACA";
-	public  final String K_ENV4_TIPOTRACAR 		= "TIPOTRACAR";
-	public  final String K_ENV5_CODLOTE 		= "CODLOTE";
-	public  final String K_ENV6_CODTRA			= "CODTRA";
-	public  final String K_ENV7_CODMOTOR		= "CODMOTOR";
-	public  final String K_ENV8_NOMMOTOR		= "NOMMOTOR";
-	public  final String K_ENV9_LICENCIAMOTOR	= "LICENCIAMOTOR";
-	public  final String K_ENV10_CANTCOMB		= "CANTCOMB";
+	public  final String K_ENV1_PLACA 			= "PLACA";
+	public  final String K_ENV2_CODMOTOR 		= "CODMOTOR";
+	public  final String K_ENV3_CODCLIE 		= "CODCLIE";
+	public  final String K_ENV4_ORDENQUEMA		= "ORDENQUEMA";
+	public  final String K_ENV5_PROCEDENCIA  	= "PROCEDENCIA";
+	public  final String K_ENV6_TIPOTRACAR 		= "TIPOTRACAR";
+	public  final String K_ENV7_CODLOTE 		= "CODLOTE";
+	public  final String K_ENV8_NOMLOTE 		= "NOMLOTE";
+	public  final String K_ENV9_CODTRA			= "CODTRA";
+	public  final String K_ENV10_NOMMOTOR		= "NOMMOTOR";
+	public  final String K_ENV11_FSALING		= "FSALING";
 
 
 	//MOVIMIENTOS DE TABLE_ENVIOS REALIZADOS EN QUINCENAS
 	public  final String TABLE_ENVIOS_REALIZADOS 	= "ENVIOS_REALIZADOS";
 	//ACTIVIDADES DE TRABAJO table columns name
 	public  final String K_ENVR0_ID 		    = "ID_ENVR";
-	public  final String K_ENVR1_ENVCOD 		= "ENVCOD";
-	public  final String K_ENVR2_ENVDESC 		= "ENVDESC";
-	public  final String K_ENVR3_ESTATUSLOCAL 	= "ESTATUSLOCAL";
-	public  final String K_ENVR4_INGRESO_MANUAL = "INGRESO_MANUAL";
-	public  final String K_ENVR5_COMENTARIO     = "COMENTARIO";
-	public  final String K_ENVR6_NTACO  	 	= "NENVIO";
-	public  final String K_ENVR7_UNIADAS  	 	= "UNIADAS";
-	public  final String K_ENVR8_USUARIO  	 	= "USUARIO";
-	public  final String K_ENVR9_CODLOTE  	 	= "CODLOTE";
-	public  final String K_ENVR10_PORCENTAJE 	= "PORCENTAJE";
-	public  final String K_ENVR11_FECHAREG   	= "FECHAREG";
-	public  final String K_ENVR12_FECHADIA   	= "FECHADIA";
-	public  final String K_ENVR13_RASTRAPLACA   = "RASTRAPLACA";
-	public  final String K_ENVR14_LLAVE   		= "LLAVE";
-	public  final String K_ENVR15_QUINID   		= "QUINID";
+	public final String K_ENVR1_ENVIO			   = "NUMTACO";
+	public final String K_ENVR2_CARGADORA 	 	   = "CARGADORA";
+	public final String K_ENVR3_CARGADOR		    = "CARGADOR";
+	public final String K_ENVR4_NOMBRECARD 		   = "NOMBRECARD";
+	public final String K_ENVR5_FCORTA   	       = "FCORTA";
+	public final String K_ENVR6_HCORTA   	       = "HCORTA";
+	public final String K_ENVR7_FLLEGA 	 		   = "FLLEGA";
+	public final String K_ENVR8_HLLEGA 	 		   = "HLLEGA";
+	public final String K_ENVR9_FCARGA 			   = "FCARGA";
+	public final String K_ENVR10_HCARGA 		   = "HCARGA";
+	public final String K_ENVR11_FSALIDA		   = "FSALIDA";
+	public final String K_ENVR12_HSALIDA		   = "HSALIDA";
+	public final String K_ENVR13_OBSERV  		   = "OBSERV";
+	public final String K_ENVR14_ULTIMOENV 		   = "ULTIMOENV";
+	public final String K_ENVR15_ESTATUSLOCAL  		 = "ESTATUSLOCAL";
+	public final String K_ENVR16_INGRESO_MANUAL    = "INGRESO_MANUAL";
+	//public final String K_ENVR15_LLAVE 		        = "LLAVE";
 
 
 	//MOVIMIENTOS DE TABLE_RASTRAS_CARGADAS
@@ -186,54 +196,67 @@ public class DatabaseHandler_ extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		String CREATE_ENVIOS = "CREATE TABLE " + TABLE_ENVIOS + "("
 				+ K_ENV0_ID 			+ " INTEGER PRIMARY KEY, "
-				+ K_ENV1_UMOVDESC 		+ " TEXT, "
-				+ K_ENV2_LOTEDESC 		+ " TEXT, "
-				+ K_ENV3_PLACA 			+ " TEXT, "
-				+ K_ENV4_TIPOTRACAR 	+ " TEXT, "
-				+ K_ENV5_CODLOTE 		+ " TEXT, "
-				+ K_ENV6_CODTRA 		+ " TEXT, "
-				+ K_ENV7_CODMOTOR 		+ " TEXT, "
-				+ K_ENV8_NOMMOTOR 		+ " TEXT, "
-				+ K_ENV9_LICENCIAMOTOR 	+ " TEXT, "
-				+ K_ENV10_CANTCOMB 		+ " TEXT  "
+				+ K_ENV1_PLACA 		+ " TEXT, "
+				+ K_ENV2_CODMOTOR 		+ " TEXT, "
+				+ K_ENV3_CODCLIE 			+ " TEXT, "
+				+ K_ENV4_ORDENQUEMA 	+ " TEXT, "
+				+ K_ENV5_PROCEDENCIA 		+ " TEXT, "
+				+ K_ENV6_TIPOTRACAR 		+ " TEXT, "
+				+ K_ENV7_CODLOTE 		+ " TEXT, "
+				+ K_ENV8_NOMLOTE 		+ " TEXT, "
+				+ K_ENV9_CODTRA 	+ " TEXT, "
+				+ K_ENV10_NOMMOTOR 		+ " TEXT, "
+				+ K_ENV11_FSALING 		+ " TEXT  "
+
 				+")";
 		db.execSQL(CREATE_ENVIOS);
 
 
-		String CREATE_DESPACHO_COMBUSTIBLE = "CREATE TABLE " + TABLE_DESPACHO_COMBUSTIBLE + "("
-				+ K_COMB0_ID 			+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-				+ K_COMB1_NUMTACO 		+ " TEXT, "
-				+ K_COMB2_PLACA 		+ " TEXT, "
-				+ K_COMB3_NUMTRASP 		+ " TEXT, "
-				+ K_COMB4_USUARIO 		+ " TEXT, "
-				+ K_COMB5_FECHA 		+ " TEXT, "
-				+ K_COMB6_NOS 			+ " TEXT, "
-				+ K_COMB7_GAL_BOMBA 	+ " TEXT, "
-				+ K_COMB8_GAL_PRECIO 	+ " TEXT, "
-				+ K_COMB9_CORTE 		+ " TEXT, "
-				+ K_COMB10_CORRELATIVO 	+ " TEXT, "
-				+ K_COMB11_LLAVE 		+ " TEXT  "
+		String CREATE_DESPACHO_ENVIOS = "CREATE TABLE " + TABLE_DESPACHO_ENVIOS + "("
+				+ K_DESP0_ID 			+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
+				+ K_DESP1_ENVIO  		+ " TEXT, "
+				+ K_DESP2_CARGADORA 	+ " TEXT, "
+				+ K_DESP3_CARGADOR 		+ " TEXT, "
+				+ K_DESP4_NOMBRECARD 	+ " TEXT, "
+				+ K_DESP5_FCORTA		+ " TEXT, "
+				+ K_DESP6_HCORTA		+ " TEXT, "
+				+ K_DESP7_FLLEGA		+ " TEXT, "
+				+ K_DESP8_HLLEGA		+ " TEXT, "
+				+ K_DESP9_FCARGA     	+ " TEXT, "
+				+ K_DESP10_HCARGA     	+ " TEXT, "
+				+ K_DESP11_FSALIDA 	    + " TEXT, "
+				+ K_DESP12_HSALIDA 	    + " TEXT, "
+				+ K_DESP13_OBSERV 		+ " TEXT, "
+				+ K_DESP14_ULTIMOENV 	+ " TEXT, "
+				+ K_DESP15_LLAVE 	    + " TEXT, "
+				+ K_DESP16_OC    	    + " TEXT, "
+				+ K_DESP17_NOENVIO    	+ " TEXT, "
+				+ K_DESP18_TIPCANA    	+ " TEXT, "
+				+ K_DESP19_PLACA	    + " TEXT  "
+
 				+")";
-		db.execSQL(CREATE_DESPACHO_COMBUSTIBLE);
+		db.execSQL(CREATE_DESPACHO_ENVIOS);
 
 
 		String CREATE_ENVIOS_REALIZADOS = "CREATE TABLE " + TABLE_ENVIOS_REALIZADOS + "("
 				+ K_ENVR0_ID 			 + " INTEGER PRIMARY KEY, "
-				+ K_ENVR1_ENVCOD 		 + " TEXT, "
-				+ K_ENVR2_ENVDESC 		 + " TEXT, "
-				+ K_ENVR3_ESTATUSLOCAL 	 + " TEXT, "
-				+ K_ENVR4_INGRESO_MANUAL + " TEXT, "
-				+ K_ENVR5_COMENTARIO 	 + " TEXT, "
-				+ K_ENVR6_NTACO 		 + " TEXT, "
-				+ K_ENVR7_UNIADAS 		 + " TEXT, "
-				+ K_ENVR8_USUARIO 		 + " TEXT, "
-				+ K_ENVR9_CODLOTE 		 + " TEXT, "
-				+ K_ENVR10_PORCENTAJE 	 + " TEXT, "
-				+ K_ENVR11_FECHAREG 	 + " TEXT, "
-				+ K_ENVR12_FECHADIA 	 + " TEXT, "
-				+ K_ENVR13_RASTRAPLACA 	 + " TEXT, "
-				+ K_ENVR14_LLAVE 	 	 + " TEXT, "
-				+ K_ENVR15_QUINID 	 	 + " TEXT  "
+				+ K_ENVR1_ENVIO  		+ " TEXT, "
+				+ K_ENVR2_CARGADORA 	+ " TEXT, "
+				+ K_ENVR3_CARGADOR 		+ " TEXT, "
+				+ K_ENVR4_NOMBRECARD 	+ " TEXT, "
+				+ K_ENVR5_FCORTA		+ " TEXT, "
+				+ K_ENVR6_HCORTA		+ " TEXT, "
+				+ K_ENVR7_FLLEGA		+ " TEXT, "
+				+ K_ENVR8_HLLEGA		+ " TEXT, "
+				+ K_ENVR9_FCARGA     	+ " TEXT, "
+				+ K_ENVR10_HCARGA     	+ " TEXT, "
+				+ K_ENVR11_FSALIDA 	    + " TEXT, "
+				+ K_ENVR12_HSALIDA     + " TEXT, "
+				+ K_ENVR13_OBSERV 		+ " TEXT, "
+				+ K_ENVR14_ULTIMOENV 	+ " TEXT, "
+				+ K_ENVR15_ESTATUSLOCAL		+ " TEXT, "
+				+ K_ENVR16_INGRESO_MANUAL 	+ " TEXT "
+				//+ K_ENVRP15_LLAVE 	    + " TEXT  "
 				+")";
 		db.execSQL(CREATE_ENVIOS_REALIZADOS);
 
@@ -371,7 +394,7 @@ public class DatabaseHandler_ extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CUADRILLAS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_ASISTENCIA_EMP);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_RASTRAS_CARGADAS);
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_DESPACHO_COMBUSTIBLE);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_DESPACHO_ENVIOS);
 
 		// Create tables again
 		onCreate(db);

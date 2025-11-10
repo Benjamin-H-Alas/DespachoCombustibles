@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EnviosRastrasPlanilla</string>
+    <string name="app_name">Envios</string>
     <string name="title_activity_act_envios_realizados">ActEnviosRealizados</string>
     <string name="title_activity_act_lista_envios">ActListaEnvios</string>
     <string name="title_activity_act_menu_inicial">ActMenuInicial</string>
@@ -93,6 +93,6 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_act_despacho_combustible">ActDespachoCombustible</string>
+    <string name="title_activity_act_EnviosRealizados">EnviosRealizados</string>
 
 </resources>

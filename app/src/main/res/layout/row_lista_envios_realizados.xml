@@ -47,7 +47,7 @@
         android:layout_toStartOf="@+id/imgv_candado" />
 
     <TextView
-        android:id="@+id/tvr_placa"
+        android:id="@+id/tvr_hcorta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#333"
@@ -64,7 +64,7 @@
         android:textColor="#333"
         android:padding="5dp"
         android:text="TACO: 4548"
-        android:layout_below="@+id/tvr_placa"
+        android:layout_below="@+id/tvr_hcorta"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 

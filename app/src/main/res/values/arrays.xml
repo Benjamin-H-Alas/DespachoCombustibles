@@ -1,9 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string-array name="porcentaje_carga">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
+    <item>1</item>
+     <item>2</item>
     </string-array>
+
+    <string-array name="Cargadora">
+        <item>Seleccione Cargadora:</item>
+        <item>01-CAMECO SP 1800</item>
+        <item>02-CAMECO SP 1800-B</item>
+        <item>03-CAMECO SP 1800-B</item>
+        <item>05-CAMECO SP 1800-B</item>
+        <item>06-CAMECO SP 1800-B</item>
+        <item>09-CAMECO SP 1800-B</item>
+        <item>12-CAMECO SP 1800</item>
+        <item>19-JOHN DEERE EQ. #19</item>
+        <item>20-JOHN DEERE EQ. #20.</item>
+        <item>28-COSECHADORA 63</item>
+        <item>29-COSECHADORA 64</item>
+        <item>30-COSECHADORA 65</item>
+        <item>31-COSECHADORA 66</item>
+        <item>32-COSECHADORA 67</item>
+        <item>33-COSECHADORA 68</item>
+        <item>39-A.C.P.A. LOS CHILAMATES DE R.L.</item>
+        <item>41-A.C.P.A. LOS CHILAMATES DE R.L.</item>
+        <item>44-A.C.P.A. LOS MANGOS DE R.L.</item>
+        <item>46-MATYRA, S.A. DE C.V.</item>
+        <item>49-A.C.P.A. SANTA CLARA #2 DE R.L.</item>
+        <item>51-ANGEL # 1</item>
+        <item>52-ANGEL # 2</item>
+        <item>53-ANGEL # 3</item>
+        <item>54-CASSA</item>
+        <item>55-CASSA</item>
+        <item>56-A.C.P.A. SAN FRANCISCO DE R.L.</item>
+        <item>57-INGENIO JIBOA CARGADORA</item>
+        <item>62-A.C.P.A. LOS MANGOS DE R.L.</item>
+        <item>75-INGENIO JIBOA COSECHADORA</item>
+        <item>77-COSECHADORA 570</item>
+        <item>99-PROPIO</item>
+    </string-array>
+
+    <string-array name="Cargador">
+        <item>Seleccione Cargador:</item>
+        <item>AGUSTIN ALBERTO LOPEZ HERNANDEZ-983</item>
+        <item>ALVARO DE JESUS RIVAS VELASQUEZ-15274</item>
+        <item>BRANDO NAZARETH LOPEZ ESCOBAR-15834</item>
+        <item>CARGADOR PROPIO-99</item>
+        <item>CARLOS ABDIEL PORTILLO MALDONADO-984</item>
+        <item>CARLOS ALEXIS CASTANEDA MOYA-1442</item>
+        <item>CARLOS ININEO ESQUIVEL MEJIA-15662</item>
+        <item>CRISTIAN OMAR MELENDEZ ALAS-16222</item>
+        <item>CRISTIAN YOVANI SANCHEZ PEREZ-943</item>
+        <item>DELIS SALVADOR HENRIQUEZ LOPEZ-15363</item>
+        <item>ELMER ANTONIO ORELLANA-987</item>
+        <item>ELVIN IVAN RIVERA TEJADA-15619</item>
+        <item>EMANUEL DE JESUS MARTINEZ SANABRIA-997</item>
+        <item>JORGE ALBERTO ALEMAN SANTOS-937</item>
+        <item>JOSE ADAN DIAZ AREVALO-15495</item>
+        <item>JOSE RUBIO GUADRON MENJIVAR-1107</item>
+        <item>JOSE RUTILIO PAREDES JUAREZ-15826</item>
+        <item>JOSE SANTIAGO ALAS ANAYA-1256</item>
+        <item>JOSE VALENTIN ECHEVERRIA-15260</item>
+        <item>JOSE WILFREDO ARTEAGA MELGAR-632</item>
+        <item>JUAN ODIEL PORTILLO AGUILAR-999</item>
+        <item>JULIO ALBERTO HERNANDEZ ZETINO-16238</item>
+        <item>LUIS FERNANDO VALLADARES MARROQUIN-998</item>
+        <item>LUIS SIGFREDO AYALA RODAS-938</item>
+        <item>MELVIN DE JESUS MORALES PORTILLO-985</item>
+        <item>MIGUEL ANGEL RUIZ TORRES-15818</item>
+        <item>PORFIRIO RAFAEL RODRÍGUEZ SEGURA-15478</item>
+        <item>ROBERTO CARLOS CASTELLON-1108</item>
+        <item>SALVADOR ANTONIO PORTILLO VASQUEZ-16252</item>
+        <item>SANTOS ALBERTO CISNEROS GALDAMEZ-996</item>
+    </string-array>
+
+    <string-array name="Cana">
+        <item>Seleccione Tipo Caña:</item>
+        <item>19-Larga Cruda</item>
+        <item>27-Larga Quemada</item>
+        <item>35-Corta Cruda</item>
+        <item>43-Corta Quemada</item>
+    </string-array>
+
 </resources>

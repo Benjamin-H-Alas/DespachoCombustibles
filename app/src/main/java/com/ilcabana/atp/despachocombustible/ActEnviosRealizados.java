@@ -47,7 +47,7 @@ public class ActEnviosRealizados extends AppCompatActivity implements SearchView
     Context ctx = this;
 
     AdapterEnviosRealizados adpEnviosRealizados = new AdapterEnviosRealizados();
-    static String COD_QUINCENA, FECHA_DIA, ENV0_ID, NOMBRE_DIA;
+    static String COD_QUINCENA,K_DESP1_ENVIO, FECHA_DIA, ENV0_ID, NOMBRE_DIA;
     ClassDescargarInicioApp classDescargarInicioApp;
     String TacoNumero = "0";
     @Override
@@ -106,23 +106,7 @@ public class ActEnviosRealizados extends AppCompatActivity implements SearchView
                 HashMap<?, ?> itemList = (HashMap<?, ?>) lv_envios_realizados.getItemAtPosition(posicion);
 
                 ENV0_ID = itemList.get("K_ENV0_ID").toString();
-                /*
-                if (estadoBotonMenu == 1) {
-                    Toast.makeText(ctx, "MensajeUbicacion MENSAJE DE EJEMPLO1 " + ENV0_ID, Toast.LENGTH_SHORT).show();
 
-                    String ENVDESC = itemList.get("tvr_num_placa").toString() + " LOTE: " + itemList.get("tvr_codnom_lote").toString();
-                    if (adpEnvios.setInsertTacos(ENV0_ID, ENVDESC, ctx)) {
-                        Toast.makeText(ctx, "MensajeUbicacion MENSAJE DE EJEMPLO2 " + ENV0_ID, Toast.LENGTH_SHORT).show();
-
-                        intentRESULT_OK();
-                        finish();
-                    }
-                } else {
-                    Toast.makeText(ctx, "MensajeUbicacion MENSAJE DE EJEMPLO3 " + ENV0_ID, Toast.LENGTH_SHORT).show();
-                    intentRESULT_OK();
-                    finish();
-                }
-                */
             }
         });
     }
@@ -243,14 +227,7 @@ public class ActEnviosRealizados extends AppCompatActivity implements SearchView
                 TacoNumero = txtCantidad.getText().toString();
 
                 metodoIniciarDescargaEnvios();
-                /*
-                if ((Double.parseDouble(validarCampoVacio( txtCantidad.getText().toString() )) > 0)) {
-                    TacoNumero = txtCantidad.getText().toString();
-                    metodoIniciarDescargaEnvios();
-                } else {
-                    Toast.makeText(ctx, "Digite un valor correcto", Toast.LENGTH_SHORT).show();
-                    addTaco();
-                }*/
+
             }
         });
         builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -339,7 +316,7 @@ public class ActEnviosRealizados extends AppCompatActivity implements SearchView
             switch (numActividad) {
 
                 case 1:
-                    if (classDescargarInicioApp.ws_bajarListadoEnviosPagoToneladaRealizados(Config.key_EmprId, Config.getKey_UsuId_(), "0")
+                    if (classDescargarInicioApp.ws_bajarListadoEnvios(Config.key_EmprId, Config.getKey_UsuId_(), "0")
                             ){
                         return true;
                     }else{
@@ -353,8 +330,22 @@ public class ActEnviosRealizados extends AppCompatActivity implements SearchView
                         return false;
                     }
                 case 2:
-                    if (classDescargarInicioApp.ws_guardarNuevoMovimientoCombustible(COD_QUINCENA)
+                    if (classDescargarInicioApp.ws_guardarNuevoMovimientoEnvio(COD_QUINCENA)
                             ){
+                        return true;
+                    }else{
+                        if(isCancelled())
+                        {
+                            Log.d("Login: ", "doInBackground, Actividad cancelada TRUE");
+                            return false;
+                        }
+                        Log.d("Login: ", "doInBackground, Actividad cancelada FALSE");
+
+                        return false;
+                    }
+                case 3:
+                    if (classDescargarInicioApp.ws_bajarMovEnvios("0")
+                    ){
                         return true;
                     }else{
                         if(isCancelled())

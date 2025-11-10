@@ -5,6 +5,97 @@
     android:padding="15dp" >
 
     <TextView
+        android:id="@+id/tvr_fsaling"
+        android:layout_width="186dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:text="Sal"
+        android:textColor="#2E9AFE" />
+
+    <TextView
+        android:id="@+id/tvr_nomlote"
+        android:layout_width="223dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="95dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:text="Nombre de lote"
+        android:textColor="#2E9AFE" />
+
+    <TextView
+        android:id="@+id/tvr_codlote"
+        android:layout_width="103dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvr_num_envio"
+        android:layout_alignLeft="@+id/tvr_num_envio"
+        android:layout_marginLeft="1dp"
+        android:layout_marginTop="70dp"
+        android:text="Cod Lote"
+        android:textColor="#2E9AFE" />
+
+    <TextView
+        android:id="@+id/tvr_tipotracar"
+        android:layout_width="287dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvr_nommotor"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="110dp"
+        android:layout_marginLeft="110dp"
+        android:layout_marginTop="-68dp"
+        android:text="Tipo Rastra canera"
+        android:textColor="#333" />
+
+    <TextView
+        android:id="@+id/tvr_procedencia"
+        android:layout_width="396dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="118dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:text="Procedencia"
+        android:textColor="#2E9AFE" />
+
+    <TextView
+        android:id="@+id/tvr_codtra"
+        android:layout_width="126dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/tvr_codtra"
+        android:layout_alignLeft="@+id/tvr_codtra"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="-14dp"
+        android:layout_marginRight="-14dp"
+        android:text="Cod Trans"
+        android:textColor="#2E9AFE" />
+
+    <TextView
+        android:id="@+id/tvr_ordenquema"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvr_num_envio"
+        android:layout_alignLeft="@+id/tvr_num_envio"
+        android:layout_marginLeft="108dp"
+        android:layout_marginTop="0dp"
+        android:text="ONDEN DE QUEMA"
+        android:textColor="#2E9AFE" />
+
+    <TextView
         android:id="@+id/tvr_num_placa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,48 +108,40 @@
         android:id="@+id/tvr_num_envio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:text="TACO: 45785"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/tvr_codnom_lote"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvr_nommotor"
+        android:layout_width="289dp"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvr_num_placa"
         android:layout_below="@+id/tvr_num_placa"
-        android:textColor="#333"
-        android:text="JPAIZ001 JOSE ALEXANDER PAIZ FINCA:  1 - CEIBILLO # 3" />
+        android:layout_alignLeft="@+id/tvr_num_placa"
+        android:layout_marginLeft="105dp"
+        android:layout_marginTop="5dp"
+        android:text="Motorista"
+        android:textColor="#333" />
 
     <TextView
-        android:id="@+id/tvr_tipo_rastra"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvr_codmotor"
+        android:layout_width="99dp"
         android:layout_height="wrap_content"
-        android:text="Rastra Cañera"
-        android:textColor="#2E9AFE"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_marginTop="47dp"
+        android:text="Cod Motor"
+        android:textColor="#2E9AFE" />
 
     <TextView
-        android:id="@+id/tvr_codtrasport"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvr_nomcargador"
+        android:layout_width="114dp"
         android:layout_height="wrap_content"
-        android:textColor="#333"
-        android:text="CODTRASNP"
-        android:layout_below="@+id/tvr_codnom_lote"
+        android:layout_below="@+id/tvr_nommotor"
+        android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Galones: 100"
-        android:id="@+id/tv_galones_asignados"
-        android:layout_alignTop="@+id/tvr_codtrasport"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="3dp"
+        android:text="CODCLIE"
+        android:textColor="#333" />
 
 </RelativeLayout>
